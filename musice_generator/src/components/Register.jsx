@@ -1,5 +1,7 @@
 
-const Register = () => {
+import { Link } from "react-router-dom";
+
+function Register() {
   return (
     <div className="flex h-screen">
       {/* Left Section */}
@@ -18,7 +20,7 @@ const Register = () => {
   <div className="relative z-10 text-center bg-black bg-opacity-50 p-5 rounded-lg">
     <div className="text-3xl font-bold mb-5 flex items-center gap-2">
     <img src="/musical-note.png" alt="Google Logo" className="h-8 p-1" />
-      <span>M</span>
+      <span></span>
     </div>
     <h1 className="text-4xl font-bold mb-3">Welcome to</h1>
     <h2 className="text-3xl font-bold mb-3">Muegen Community</h2>
@@ -66,7 +68,7 @@ const Register = () => {
               />
             </div>
             <label htmlFor="terms" className="text-sm text-gray-600">
-              I agree to HackerRank's{" "}{/* while giving space we can add this {" "} to provide space b/w the elements */}
+              I agree to Muegen&apos;s{" "}{/* while giving space we can add this {" "} to provide space b/w the elements */}
               <a href="#" className="text-blue-500 hover:underline">
                 Terms of Service
               </a>{" "}
@@ -112,13 +114,13 @@ const Register = () => {
 
         <p className="mt-5 text-gray-600">
           Already have an account?{" "}
-          <a href="#" className="text-blue-500 hover:underline">
-            Log in
-          </a>
+          <Link to="/login" className="text-blue-500 hover:underline">
+            Log In
+          </Link>
         </p>
       </div>
     </div>
   );
-};
+}
 
-export default Register;
+export default Register

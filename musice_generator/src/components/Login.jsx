@@ -5,34 +5,34 @@ const Login = () => {
     <div className="flex h-screen">
       {/* Left Section */}
       <div className="w-3/4 bg-black flex flex-col justify-center items-center text-white p-10">
-      <div className="relative w-full h-screen flex flex-col items-center justify-center text-white">
-  {/* Background Video */}
-  <video 
-    className="absolute top-0 left-0 w-full h-full object-cover" 
-    src="/globe-5fdfa9a0f4.mp4" 
-    autoPlay 
-    loop 
-    muted 
-  ></video>
+        <div className="relative w-full h-screen flex flex-col items-center justify-center text-white">
+          {/* Background Video */}
+          <video
+            className="absolute top-0 left-0 w-full h-full object-cover"
+            src="/globe-5fdfa9a0f4.mp4"
+            autoPlay
+            loop
+            muted
+          ></video>
 
-  {/* Content Overlay */}
-  <div className="relative z-10 text-center bg-black bg-opacity-50 p-5 rounded-lg">
-    <div className="text-3xl font-bold mb-5 flex items-center gap-2">
-    <img src="/musical-note.png" alt="Google Logo" className="h-8 p-1" />
-      <span>M</span>
-    </div>
-    <h1 className="text-4xl font-bold mb-3">Welcome to</h1>
-    <h2 className="text-3xl font-bold mb-3">Muegen Community</h2>
-    <p className="text-lg mb-3">Home to passionate music creators worldwide</p>
-    <a
-  href="#"
-  className="bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 text-transparent bg-clip-text hover:underline font-medium text-lg"
->
-  Know more
-</a>
+          {/* Content Overlay */}
+          <div className="relative z-10 text-center bg-black bg-opacity-50 p-5 rounded-lg">
+            <div className="text-3xl font-bold mb-5 flex items-center gap-2">
+              <img src="/musical-note.png" alt="Google Logo" className="h-8 p-1" />
+              <span></span>
+            </div>
+            <h1 className="text-4xl font-bold mb-3">Welcome to</h1>
+            <h2 className="text-3xl font-bold mb-3">Muegen Community</h2>
+            <p className="text-lg mb-3">Home to passionate music creators worldwide</p>
+            <a
+              href="#"
+              className="bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 text-transparent bg-clip-text hover:underline font-medium text-lg"
+            >
+              Know more
+            </a>
 
-  </div>
-</div>
+          </div>
+        </div>
 
       </div>
 
@@ -62,7 +62,7 @@ const Login = () => {
               />
             </div>
             <label htmlFor="terms" className="text-sm text-gray-600">
-              I agree to HackerRank's{" "}{/* while giving space we can add this {" "} to provide space b/w the elements */}
+              I agree to Muegen&apos;s{" "}{/* while giving space we can add this {" "} to provide space b/w the elements */}
               <a href="#" className="text-blue-500 hover:underline">
                 Terms of Service
               </a>{" "}
@@ -92,26 +92,28 @@ const Login = () => {
           </button>
         </div>
         <div className="flex gap-4 mt-4">
-  <button className="flex  gap-2 border p-3 justify-center items-center rounded-xl w-40 h-12">
-    <img src="/linkedin.png" alt="LinkedIn Logo" className="h-6 w-6" />
-    <p className="text-black text-sm font-medium">LinkedIn</p>
-  </button>
-  <button className="flex items-center justify-center  gap-2 border p-3 rounded-xl w-40 h-12">
-    <img src="/github.png" alt="GitHub Logo" className="h-6 w-6" />
-    <p className="text-black text-sm font-medium">GitHub</p>
-  </button>
-  <button className="flex items-center justify-center gap-2 border p-3 rounded-xl w-40 h-12">
-    <img src="/facebook.png" alt="Facebook Logo" className="h-6 w-6" />
-    <p className="text-black text-sm font-medium">Facebook</p>
-  </button>
-</div>
-
+          <button className="flex  gap-2 border p-3 justify-center items-center rounded-xl w-40 h-12">
+            <img src="/linkedin.png" alt="LinkedIn Logo" className="h-6 w-6" />
+            <p className="text-black text-sm font-medium">LinkedIn</p>
+          </button>
+          <button className="flex items-center justify-center  gap-2 border p-3 rounded-xl w-40 h-12">
+            <img src="/github.png" alt="GitHub Logo" className="h-6 w-6" />
+            <p className="text-black text-sm font-medium">GitHub</p>
+          </button>
+          <button className="flex items-center justify-center gap-2 border p-3 rounded-xl w-40 h-12">
+            <img src="/facebook.png" alt="Facebook Logo" className="h-6 w-6" />
+            <p className="text-black text-sm font-medium">Facebook</p>
+          </button>
+        </div>
         <p className="mt-5 text-gray-600">
           Already have an account?{" "}
-          <Link to={Login}></Link>
-          <a href="#" className="text-blue-500 hover:underline">
+
+
+
+          <Link to="/" className="text-blue-500 hover:underline">
             Sign In
-          </a>
+          </Link>
+
         </p>
       </div>
     </div>
