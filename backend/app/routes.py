@@ -7,41 +7,61 @@ users_collection = mongo.db.users
 
 @main.route('/register', methods=['POST'])
 def register():
+    if not request.is_json:
+        return jsonify({'error': 'Request content type must be application/json'}), 400
+
     data = request.get_json()
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
+    age = data.get('age')
+    phone = data.get('phone')
 
-    if users_collection.find_one({'email': email}):
-        return jsonify({'error': 'Email already registered'}), 409
+    if not email or not password or not username or not age or not phone:
+        return jsonify({'error': 'Missing email or password'}), 400
+
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-    new_user = {
+    user = {
+         'email': email,
+        'password': hashed_password,
         'username': username,
-        'email': email,
-        'password': hashed_password
+        'age': age,
+        'phone': phone
     }
-    users_collection.insert_one(new_user)
-    return jsonify({'message': 'User registered successfully'}), 201
+    mongo.db.users.insert_one(user)
+    return jsonify({'message': 'User registered successfully!'}), 201
+
+from flask import jsonify, request
+from app import mongo, bcrypt
 
 @main.route('/login', methods=['POST'])
 def login():
+    if not request.is_json:
+        return jsonify({'error': 'Request content type must be application/json'}), 400
+
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
 
-    user = users_collection.find_one({'email': email})
-    if user and bcrypt.check_password_hash(user['password'], password):
-        return jsonify({
-            'message': 'Login successful',
-            'user': {
-                'id': str(user['_id']),
-                'username': user['username'],
-                'email': user['email']
-            }
-        }), 200
+    
+    if not email or not password:
+        return jsonify({'error': 'Email and password are required!'}), 400
 
-    return jsonify({'error': 'Invalid email or password'}), 401
+
+    user = mongo.db.users.find_one({'email': email})
+    if not user:
+        return jsonify({'error': 'User not found!'}), 404
+
+    # password
+    if not bcrypt.check_password_hash(user['password'], password):
+        return jsonify({'error': 'Invalid password!'}), 401
+
+
+    return jsonify({
+        'message': 'Login successful!',
+        'user': "user login successfully"
+    }), 200
 
 @main.route('/users', methods=['GET'])
 def get_users():
