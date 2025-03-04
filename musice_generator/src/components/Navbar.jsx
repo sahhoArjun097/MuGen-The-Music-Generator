@@ -9,7 +9,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full flex items-center   justify-between p-4 py-6 px-6 sm:px-14 bg-transparent z-10">
+    <nav className="fixed top-0 left-0 w-full flex items-center  z-10 justify-between p-4 py-6 px-6 sm:px-14 bg-transparent z-10">
       {/* Logo */}
       <div className="text-white text-2xl sm:text-3xl font-bold">
         <NavLink to="/dashboard">MuGen AI</NavLink>

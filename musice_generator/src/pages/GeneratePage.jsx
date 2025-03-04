@@ -14,7 +14,7 @@ const GeneratePage = () => {
   
     return (
       
-      <div className="container min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
+      <div className=" min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
         <h1 className="sm:text-6xl md:text-6xl lg:text-7xl text-5xl font-bold mb-8">Generate Music</h1>
         <p className="text-lg mb-9">Choose a mood to create your track.</p>
         <div className="w-full max-w-md">

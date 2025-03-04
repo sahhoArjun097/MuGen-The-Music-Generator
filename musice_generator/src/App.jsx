@@ -1,42 +1,36 @@
-
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
-import LoginPage from "./pages/login";
+import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
-// import HomePage from "./pages/Home";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import DashboardPage from "./pages/Dashboard";
 import MyMusicPage from "./pages/MyMusic";
 import GeneratePage from "./pages/GeneratePage";
-import Pattern from "./pages/Profile";
+import ProfilePage from "./pages/Profile"; // Renamed 'Pattern' to 'ProfilePage' for clarity
 
 const App = () => {
   return (
     <Router>
       <ConditionalNavbar />
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        {/* <Route path="/" element={<DashboardPage />} /> */}
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/generate" element={<GeneratePage />} />
         <Route path="/mymusic" element={<MyMusicPage />} />
-        <Route path="/profile" element={<Pattern/>} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
+      <Footer />
     </Router>
   );
 };
 
-// A helper component to conditionally render the Navbar
+// Component to conditionally render Navbar
 const ConditionalNavbar = () => {
   const location = useLocation();
+  const hideNavbarPaths = ["/", "/signup"];
 
-  // Hide Navbar on login and signup pages
-  const hideNavbarPaths = ["/login", "/signup"];
-  if (hideNavbarPaths.includes(location.pathname)) {
-    return null;
-  }
-
-  return <Navbar />;
+  return hideNavbarPaths.includes(location.pathname) ? null : <Navbar />;
 };
 
 export default App;
