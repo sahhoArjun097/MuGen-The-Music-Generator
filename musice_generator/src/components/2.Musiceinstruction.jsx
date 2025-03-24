@@ -6,9 +6,9 @@ function MusicInstruction() {
 
     const musicResults = [
         { id: 1, img: "mood1.png", color: "bg-red-500", textColor: "text-white" },
-        { id: 2, img: "mood1.png", color: "bg-purple-800", textColor: "text-yellow-300" },
-        { id: 3, img: "mood1.png", color: "bg-amber-100", textColor: "text-gray-900" },
-        { id: 4, img: "mood1.png", color: "bg-blue-500", textColor: "text-white" },
+        { id: 2, img: "mood2.png", color: "bg-purple-800", textColor: "text-yellow-300" },
+        { id: 3, img: "mood3.png", color: "bg-amber-100", textColor: "text-gray-900" },
+        { id: 4, img: "mood4.png", color: "bg-blue-500", textColor: "text-white" },
     ];
     
     return (
@@ -72,7 +72,7 @@ function MusicInstruction() {
                         {musicResults.map((music, index) => (
                             <div
                                 key={music.id}
-                                className={` rounded-xl shadow-lg ${music.color} cursor-pointer relative ${selected === index ? "ring-4 ring-blue-400" : ""
+                                className={` rounded-xl shadow-lg ${music.color} cursor-pointer relative ${selected === index ? "ring-4 ring-gray-50" : ""
                                     }`}
                                 onClick={() => setSelected(index)}
                             >
