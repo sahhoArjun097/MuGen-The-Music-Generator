@@ -1,48 +1,89 @@
 
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import MusicGenerated from '../components/MusicGenerated';
+import Musiceinstruction from '../components/2.Musiceinstruction';
 const DashboardPage = () => {
- 
-    return (
-      <StyledWrapper>
-        <div className="container">
-          <div className=" relative z-10 flex flex-col justify-center  items-center w-[100%] h-[100%] text-gray-50">
-            <h1 className="sm:text-6xl md:text-6xl lg:text-7xl text-5xl font-bold mb-6">Welcome to MuGen AI</h1>
-            <p className="text-lg mb-8">Manage your music, generate tracks, and explore features.</p>
-            <div className="flex space-x-4">
-              <Link
-                to="/generate"
-                className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
-              >
-                Generate Music
-              </Link>
-              <Link
-                to="/mymusic"
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
-              >
-                My Music
-              </Link>
-            </div>
-  
-  
+  return (
+    <StyledWrapper>
+       <div className="containers bg-gray-700 w-full flex flex-col items-center gap-12 py-16">
+
+        <div className="w-full  z-10 h-[70vh] flex flex-col justify-center items-center text-center">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+            Welcome to
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+              {" "}
+              MuGen AI
+            </span>
+          </h1>
+          <p className="mt-4 text-base sm:text-lg text-gray-300 leading-relaxed ">
+            Manage your music, generate tracks, and explore features.
+          </p>
+          {/* Buttons */}
+          <div className="mt-6 flex flex-wrap gap-4">
+            <Link
+              to="/generate"
+              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
+            >
+              Generate Music
+            </Link>
+            <Link
+              to="/mymusic"
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+            >
+              My Music
+            </Link>
           </div>
-  
-  
-  
         </div>
-      </StyledWrapper>
-    );
-  }
+        <div className="w-full h-[50vh] z-10 flex justify-center">
+          <MusicGenerated />
+        </div>
+        <div className="w-full h-[50vh] z-10 flex justify-center">
+          <Musiceinstruction />
+        </div>
+        <div className="w-full h-[50vh] z-10 flex justify-center">
+        
+        </div>
+        
+      </div>
+    </StyledWrapper>
+  );
+}
+
+const StyledWrapper = styled.div`
+  .containers {
+    width: 100%;
+    height: 100%;
+    /* Add your background pattern here */
+    /* background-color: lightblue; */
+    background-image: radial-gradient(black 55%, #0000),
+      /* radial-gradient(black 55%, #0000), */
+        linear-gradient(
+          135deg,
+          red,
+        orange,
+        yellow,
+        lime,
+        cyan,
+        blue,
+        indigo,
+        deeppink,
+        purple,
+        violet,
+        magenta,
+        gold,
+        lightgreen,
+        turquoise
+        );
+    background-size: 100% 0.5%, contain;
+    /* background-blend-mode: hard-light; */
+    /* background-position: 0 0, 1em 1em, 0 0; */
   
-  const StyledWrapper = styled.div`
+
     
-  
     .container::after {
       content: "";
-      position: absolute;
       inset: 0;
-      z-index: 1;
       backdrop-filter: blur(1em) brightness(6);
       background-image: radial-gradient(
         circle at 50% 50%,
@@ -56,7 +97,7 @@ const DashboardPage = () => {
     .container {
       position: relative;
       width: 100%;
-      height: 100vh;
+      height: 100%;
       --c: #09f;
       background-color: #000;
       background-image: radial-gradient(4px 100px at 0px 235px, var(--c), #0000),

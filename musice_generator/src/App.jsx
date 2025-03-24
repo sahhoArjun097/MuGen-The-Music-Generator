@@ -8,6 +8,7 @@ import MyMusicPage from "./pages/MyMusic";
 import GeneratePage from "./pages/GeneratePage";
 import ProfilePage from "./pages/Profile"; // Renamed 'Pattern' to 'ProfilePage' for clarity
 
+
 const App = () => {
   return (
     <Router>
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/generate" element={<GeneratePage />} />
         <Route path="/mymusic" element={<MyMusicPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+       
       </Routes>
       <Footer />
     </Router>
