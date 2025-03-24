@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -46,67 +46,66 @@ const Navbar = () => {
           My Tracks
         </NavLink>
         <div className="relative inline-flex">
-        <NavLink
-          to="/profile"
-          className="text-md px-2 font-semibold transition-all duration-150"
-        >
-          <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center font-bold shadow-lg">
-            <span className="text-white">P</span>
-          </div>
-        </NavLink>
-      {/* Profile Button */}
-      <div
-        className="flex  items-center cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-      
-        {/* Dropdown Arrow */}
-        <div className="">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 320 512"
-            className={`w-6 h-6 text-white transition-transform ${
-              isOpen ? "rotate-180" : "rotate-0"
-            }`}
-            fill="currentColor"
-          >
-            <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
-          </svg>
-        </div>
-      </div>
-
-      {/* Dropdown Menu */}
-      {isOpen && (
-        <div
-          role="menu"
-          className="absolute right-0 top-12 z-10 w-48 rounded border border-gray-300 bg-white shadow-md"
-        >
           <NavLink
             to="/profile"
-            className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-            role="menuitem"
+            className="text-md px-2 font-semibold transition-all duration-150"
           >
-            View Profile
+            <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center font-bold shadow-lg">
+              <span className="text-white">P</span>
+            </div>
           </NavLink>
-
-          <NavLink
-            to="/settings"
-            className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-            role="menuitem"
+          {/* Profile Button */}
+          <div
+            className="flex  items-center cursor-pointer"
+            onClick={() => setIsOpen(!isOpen)}
           >
-            Settings
-          </NavLink>
 
-          <button
-            type="button"
-            className="block w-full px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50"
-          >
-            Logout
-          </button>
+            {/* Dropdown Arrow */}
+            <div className="">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 320 512"
+                className={`w-6 h-6 text-white transition-transform ${isOpen ? "rotate-180" : "rotate-0"
+                  }`}
+                fill="currentColor"
+              >
+                <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Dropdown Menu */}
+          {isOpen && (
+            <div
+              role="menu"
+              className="absolute right-0 top-12 z-10 w-48 rounded border border-gray-300 bg-white shadow-md"
+            >
+              <NavLink
+                to="/profile"
+                className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                role="menuitem"
+              >
+                View Profile
+              </NavLink>
+
+              <NavLink
+                to="/settings"
+                className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                role="menuitem"
+              >
+                Settings
+              </NavLink>
+
+              <button
+                type="button"
+                className="block w-full px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
-      )}
-    </div>
-        
+
 
         {/* <div className="absolute right-0 mt-2 w-30 bg-gray-800 text-white rounded-md shadow-lg">
           <NavLink

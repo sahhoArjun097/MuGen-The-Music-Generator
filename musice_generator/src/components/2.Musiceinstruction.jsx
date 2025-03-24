@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 function MusicInstruction() {
@@ -10,7 +10,7 @@ function MusicInstruction() {
         { id: 3, img: "mood3.png", color: "bg-amber-100", textColor: "text-gray-900" },
         { id: 4, img: "mood4.png", color: "bg-blue-500", textColor: "text-white" },
     ];
-    
+
     return (
         <section className="lg:grid lg:h-screen lg:place-content-center">
             <div className="mx-auto w-screen max-w-screen-xl px-4 py-16 sm:px-6 sm:py-24 md:grid md:grid-cols-2 md:items-center md:gap-4 lg:px-8 lg:py-32">
@@ -76,9 +76,9 @@ function MusicInstruction() {
                                     }`}
                                 onClick={() => setSelected(index)}
                             >
-                               <img src={music.img} alt="" className="w-full h-full object-cover rounded-lg shadow-lg" />
+                                <img src={music.img} alt="" className="w-full h-full object-cover rounded-lg shadow-lg" />
 
-                                
+
                             </div>
                         ))}
                     </div>

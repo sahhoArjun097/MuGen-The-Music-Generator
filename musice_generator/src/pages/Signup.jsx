@@ -4,7 +4,7 @@ import api from "../api";
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
-    username:"",
+    username: "",
     email: "",
     password: "",
     phone: "",
@@ -26,13 +26,13 @@ const SignupPage = () => {
       alert("Please enter a valid age");
       return;
     }
-    if(formData.phone.length !== 10) {
+    if (formData.phone.length !== 10) {
       alert("Please enter a valid phone number");
       return;
     }
     try {
       const response = await api.post("/register", formData);
-      if(response.data.error) {
+      if (response.data.error) {
         alert(response.data.error);
         return
       }
@@ -47,7 +47,7 @@ const SignupPage = () => {
       <div className="bg-opacity-0 backdrop-blur-xl p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-3xl font-bold text-center text-purple-300 mb-6">Signup</h1>
         <form onSubmit={handleSubmit}>
-        <div className="mb-6">
+          <div className="mb-6">
             <label htmlFor="email" className="block text-purple-300 text-md pb-2 font-semibold mb-1">
               Email
             </label>
@@ -158,8 +158,8 @@ export default SignupPage;
 //         <form>
 //           <div className="mb-6"> 
 
-            
-            {/* <label htmlFor="email" className="block text-purple-300 text-md pb-2 font-semibold mb-1">
+
+{/* <label htmlFor="email" className="block text-purple-300 text-md pb-2 font-semibold mb-1">
               Email
             </label>
             <input

@@ -20,7 +20,7 @@ const App = () => {
         <Route path="/generate" element={<GeneratePage />} />
         <Route path="/mymusic" element={<MyMusicPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-       
+
       </Routes>
       <Footer />
     </Router>

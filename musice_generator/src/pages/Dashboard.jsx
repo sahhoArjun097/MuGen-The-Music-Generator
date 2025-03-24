@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import MusicGenerated from '../components/MusicGenerated';
 import Musiceinstruction from '../components/2.Musiceinstruction';
+import OverlappingDivs from '../components/OverlappingDivs';
 const DashboardPage = () => {
   return (
     <StyledWrapper>
-       <div className="containers bg-gray-700 w-full flex flex-col items-center gap-12 py-16">
+      <div className="containers bg-gray-700 w-full flex flex-col items-center gap-12 py-16">
 
         <div className="w-full  z-10 h-[70vh] flex flex-col justify-center items-center text-center">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
@@ -38,13 +39,18 @@ const DashboardPage = () => {
         <div className="w-full h-[50vh] z-10 flex justify-center">
           <MusicGenerated />
         </div>
-        <div className="w-full h-[50vh] z-10 flex justify-center">
+        <div className="w-full h-[60vh] z-10 flex justify-center">
           <Musiceinstruction />
         </div>
         <div className="w-full h-[50vh] z-10 flex justify-center">
-        
+          <OverlappingDivs/>
+
         </div>
-        
+        <div className="w-full h-[50vh] z-10 flex justify-center">
+          
+
+        </div>
+
       </div>
     </StyledWrapper>
   );
