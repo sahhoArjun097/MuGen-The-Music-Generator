@@ -11,12 +11,12 @@ const Navbar = () => {
 
   return (
     <nav className="fixed  z-20 top-0 left-0 w-full flex items-center justify-between p-4 py-6 px-6 sm:px-14 bg-transparent ">
-      {/* Logo */}
+
       <div className="text-white text-2xl sm:text-3xl font-bold">
         <NavLink to="/dashboard">MuGen AI</NavLink>
       </div>
 
-      {/* Desktop Links */}
+
       <div className="hidden md:flex space-x-2 sm:space-x-6 sm:text-lg text-sm transition-none">
         <NavLink
           to="/dashboard"
@@ -47,20 +47,18 @@ const Navbar = () => {
         </NavLink>
         <div className="relative inline-flex">
           <NavLink
-            to="/profile"
+            to=""
             className="text-md px-2 font-semibold transition-all duration-150"
           >
             <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center font-bold shadow-lg">
               <span className="text-white">P</span>
             </div>
           </NavLink>
-          {/* Profile Button */}
+
           <div
             className="flex  items-center cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
           >
-
-            {/* Dropdown Arrow */}
             <div className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -73,8 +71,6 @@ const Navbar = () => {
               </svg>
             </div>
           </div>
-
-          {/* Dropdown Menu */}
           {isOpen && (
             <div
               role="menu"
@@ -95,13 +91,16 @@ const Navbar = () => {
               >
                 Settings
               </NavLink>
+              <NavLink to="/">
+                <button
+                  type="button"
+                  className="block w-full px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50"
+                >
+                  Logout
+                </button>
 
-              <button
-                type="button"
-                className="block w-full px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50"
-              >
-                Logout
-              </button>
+              </NavLink>
+
             </div>
           )}
         </div>

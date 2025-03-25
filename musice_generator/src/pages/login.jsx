@@ -1,14 +1,12 @@
 import { useState } from "react";
-// useEffect,
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api";
-import './pages.css';
+import { signInWithGoogle } from "../config/FireBaseAuth";
+import "./pages.css";
 
 const LoginPage = () => {
-
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -43,10 +41,20 @@ const LoginPage = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithGoogle();
+      if (result.user) {
+        localStorage.setItem("user", JSON.stringify(result.user));
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+    }
+  };
+
   return (
-    <div
-      className="min-h-screen w-[100vw] flex items-center justify-center bg-cover bg-center loginBackgroundImage"
-    >
+    <div className="min-h-screen w-[100vw] flex items-center justify-center bg-cover bg-center loginBackgroundImage">
       <div className="bg-opacity-0 backdrop-blur-xl p-8 rounded-lg shadow-lg sm:w-full max-w-md w-[95%]">
         <h1 className="text-3xl font-bold text-center text-purple-300 mb-6">Login</h1>
         <form onSubmit={login}>
@@ -65,7 +73,7 @@ const LoginPage = () => {
               placeholder="Enter your email"
             />
           </div>
-          <div className="mb-12">
+          <div className="mb-6">
             <label htmlFor="password" className="block text-purple-300 text-md pb-2 font-semibold mb-1">
               Password
             </label>
@@ -87,6 +95,22 @@ const LoginPage = () => {
             {isLoading ? "Loading..." : "Login"}
           </button>
         </form>
+
+        <div className="flex items-center my-4">
+          <hr className="flex-grow border-gray-300" />
+          <span className="px-2 text-purple-300">or</span>
+          <hr className="flex-grow border-gray-300" />
+        </div>
+
+        {/* Google Sign-In Button */}
+        <button
+          onClick={handleGoogleSignIn}
+          className="w-full py-2 bg-white text-black font-semibold rounded-lg flex items-center justify-center gap-2 hover:bg-gray-200 transition-all duration-200"
+        >
+          <img src="google.png" alt="Google Logo" className="w-5 h-5" />
+          Sign in with Google
+        </button>
+
         <p className="text-center text-purple-400 text-md pb-2 mt-4">
           Don&apos;t have an account? <Link to="/signup" className="text-purple-200 hover:underline cursor-pointer">Sign up</Link>
         </p>
