@@ -36,18 +36,14 @@ const DashboardPage = () => {
             </Link>
           </div>
         </div>
-        <div className="w-full h-[50vh] z-10 flex justify-center">
+        <div className="w-full  h-[50vh] md:h-[50vh] z-10 flex justify-center">
           <MusicGenerated />
         </div>
-        <div className="w-full h-[60vh] z-10 flex justify-center">
+        <div className="w-full  h-[60vh] md:h-[80vh] z-10 flex justify-center">
           <Musiceinstruction />
         </div>
-        <div className="w-full h-[50vh] z-10 flex justify-center">
-          <OverlappingDivs/>
-
-        </div>
-        <div className="w-full h-[50vh] z-10 flex justify-center">
-          
+        <div className="w-full h-[70vh] mt-20 z-10 flex justify-center items-center">
+          <OverlappingDivs />
 
         </div>
 
