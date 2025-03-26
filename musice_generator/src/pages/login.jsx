@@ -45,14 +45,26 @@ const LoginPage = () => {
     try {
       const result = await signInWithGoogle();
       if (result.user) {
-        localStorage.setItem("user", JSON.stringify(result.user));
-        navigate("/dashboard");
+        const userData = {
+          email: result.user.email,
+          name: result.user.displayName,
+          profile_picture: result.user.photoURL,
+
+        };
+        const response = await api.post("/google-login", userData);
+        if (response.status === 200) {
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          localStorage.setItem("access_token", response.data.access_token);
+          navigate("/dashboard");
+        } else {
+          alert("Error saving user data");
+        }
       }
     } catch (error) {
       console.error("Google Sign-In Error:", error);
     }
   };
-
+  
   return (
     <div className="min-h-screen w-[100vw] flex items-center justify-center bg-cover bg-center loginBackgroundImage">
       <div className="bg-opacity-0 backdrop-blur-xl p-8 rounded-lg shadow-lg sm:w-full max-w-md w-[95%]">

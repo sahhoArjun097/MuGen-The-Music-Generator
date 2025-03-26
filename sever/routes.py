@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from models import User
-
+from models import CloudStorage
+from config import cloudinary 
 auth_bp = Blueprint('auth', __name__)
 
 # Register route
@@ -28,6 +29,39 @@ def login():
         access_token = create_access_token(identity=user['email'])
         return jsonify({"access_token": access_token, "msg": "Successfully logged in"}), 200
     return jsonify({"msg": "Invalid credentials"}), 401
+
+# Google Login route
+@auth_bp.route('/google-login', methods=['POST'])
+def google_login():
+    data = request.get_json()
+    email = data.get("email")
+    name = data.get("name")
+    profile_picture = data.get("profile_picture")
+    # google_uid = data.get("google_uid")
+    # provider = data.get("provider")
+
+    if not email:
+        return jsonify({"error": "Invalid data"}), 400
+
+    # Check if user already exists
+    existing_user = User.find_by_email(email)
+    
+    if not existing_user:
+        # Create a new user
+        new_user = {
+            "email": email,
+            "name": name,
+            "profile_picture": profile_picture,
+            # "google_uid": google_uid,
+            # "provider": provider,
+        }
+        User.save_google_user(new_user)  # Function to store Google user in DB
+
+    # Generate JWT Token
+    access_token = create_access_token(identity=email)
+    user = User.find_by_email(email)
+
+    return jsonify({"access_token": access_token, "user": user, "msg": "Google login successful"}), 200
 
 # Logout route
 @auth_bp.route('/logout', methods=['POST'])
