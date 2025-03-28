@@ -29,15 +29,15 @@ class User:
 
 
 class CloudStorage:
-    def __init__(self, user_email, file_url, file_type):
-        self.user_email = user_email
+    def __init__(self, email, file_url, file_type):
+        self.email = email
         self.file_url = file_url
         self.file_type = file_type  # e.g., image, video, audio
 
     def save_to_db(self):
         """Save uploaded file details to MongoDB"""
         file_data = {
-            "user_email": self.user_email,
+            "email": self.email,
             "file_url": self.file_url,
             "file_type": self.file_type,
         }

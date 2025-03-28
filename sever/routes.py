@@ -2,7 +2,8 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from models import User
 from models import CloudStorage
-from config import cloudinary 
+from config import cloudinary
+from config import  upload_to_cloudinary
 auth_bp = Blueprint('auth', __name__)
 
 # Register route
@@ -68,3 +69,41 @@ def google_login():
 @jwt_required()
 def logout():
     return jsonify({"msg": "Successfully logged out"}), 200
+
+@auth_bp.route('/upload', methods=['POST'])
+def upload_file():
+    file = request.files.get('file')  # Get file, return None if not found
+    print(file)
+    user_email = request.form.get("user_email")
+    print(user_email)
+
+    if not user_email:
+        return jsonify({"msg": "User email is required"}), 400
+    print(file)
+
+    file_url = None
+    file_type = None
+
+    if file:
+        # Save file locally (optional) or read it directly
+        file_path = f"temp_{file.filename}"
+        file.save(file_path)
+          # Print the files received
+
+
+        # Upload to Cloudinary
+        file_url = upload_to_cloudinary(file_path)
+        print(file_url)
+        file_type = file.content_type
+
+        if not file_url:
+            return jsonify({"msg": "File upload failed"}), 500
+
+    # Save file info to MongoDB (even if no file is uploaded)
+    file_data = CloudStorage(user_email, file_url, file_type)
+    file_data.save_to_db()
+
+    return jsonify({
+        "msg": "Data saved successfully",
+        "file_url": file_url if file_url else "No file uploaded"
+    }), 201

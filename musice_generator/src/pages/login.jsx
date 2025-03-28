@@ -117,9 +117,9 @@ const LoginPage = () => {
         {/* Google Sign-In Button */}
         <button
           onClick={handleGoogleSignIn}
-          className="w-full py-2 bg-white text-black font-semibold rounded-lg flex items-center justify-center gap-2 hover:bg-gray-200 transition-all duration-200"
+          className="w-full py-2  text-white  bg-violet-300  font-semibold rounded-lg flex items-center justify-center gap-2 hover:bg-gray-200 transition-all duration-200"
         >
-          <img src="google.png" alt="Google Logo" className="w-5 h-5" />
+          <img src="google.png" alt="Google Logo" className="w-5    h-5" />
           Sign in with Google
         </button>
 

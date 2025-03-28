@@ -19,3 +19,13 @@ cloudinary.config(
     api_key=Config.API_KEY,
     api_secret=Config.API_SECRET
 )
+
+
+def upload_to_cloudinary(file_path):
+    try:
+        response = cloudinary.uploader.upload(file_path)
+        file_url = response.get("secure_url") 
+        return file_url
+    except Exception as e:
+        print(f"Cloudinary upload error: {e}")
+        return None
