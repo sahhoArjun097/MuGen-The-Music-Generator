@@ -5,12 +5,8 @@
 .card {
     overflow: hidden;
     position: relative;
-    display: flex;
-    flex-direction: column;
     gap: 0.75rem;
     padding: 1rem;
-    width: 14rem;
-    height: auto;
     background-color: rgb(122, 48, 143);
     background-image: radial-gradient(
         circle at 0% 0%,

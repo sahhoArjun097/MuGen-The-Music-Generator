@@ -46,15 +46,7 @@ const Navbar = () => {
           My Tracks
         </NavLink>
         
-        <NavLink
-          to="/pricing"
-          className={({ isActive }) =>
-            `text-md py-2 px-2 font-semibold transition-all duration-150 ${isActive ? " text-white border-b-4" : " text-white border-b-2 border-transparent transition-all duration-300 ease-in-out hover:border-white"
-            }`
-          }
-        >
-          Pricing
-        </NavLink>
+        
 
         <div className="relative inline-flex">
           <NavLink
