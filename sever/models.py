@@ -1,5 +1,6 @@
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
+import uuid
 
 mongo = PyMongo()
 bcrypt = Bcrypt()
@@ -18,7 +19,7 @@ class User:
     def save_google_user(user_data):
         """Save Google authenticated users"""
         mongo.db.users.insert_one(user_data)
-
+ 
     @staticmethod
     def find_by_email(email):
         return mongo.db.users.find_one({"email": email}, {"_id": 0})
@@ -26,7 +27,6 @@ class User:
     @staticmethod
     def verify_password(input_password, stored_password):
         return bcrypt.check_password_hash(stored_password, input_password)
-
 
 class CloudStorage:
     def __init__(self, email, file_url, file_type):

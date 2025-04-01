@@ -1,11 +1,16 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify,send_file
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from models import User
 from models import CloudStorage
 from config import cloudinary
 from config import  upload_to_cloudinary
 auth_bp = Blueprint('auth', __name__)
+from flask_bcrypt import Bcrypt
+import uuid
 
+
+
+bcrypt = Bcrypt()
 # Register route
 @auth_bp.route('/register', methods=['POST'])
 def register():
@@ -21,15 +26,32 @@ def register():
     
     return jsonify({"msg": "User created successfully"}), 201
 
-# Login route
+
+from bson import ObjectId
+
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
     user = User.find_by_email(data['email'])
+
     if user and User.verify_password(data['password'], user['password']):
         access_token = create_access_token(identity=user['email'])
-        return jsonify({"access_token": access_token, "msg": "Successfully logged in"}), 200
+
+        user_data = {
+            # Convert ObjectId to string
+            "email": user["email"],
+            "tokens": user.get("tokens", 500),
+            "songs": user.get("songs", []),  # Fetch songs
+        }
+
+        return jsonify({
+            "access_token": access_token,
+            "msg": "Successfully logged in",
+            "user": user_data
+        }), 200
+
     return jsonify({"msg": "Invalid credentials"}), 401
+
 
 # Google Login route
 @auth_bp.route('/google-login', methods=['POST'])
@@ -89,8 +111,6 @@ def upload_file():
         file_path = f"temp_{file.filename}"
         file.save(file_path)
           # Print the files received
-
-
         # Upload to Cloudinary
         file_url = upload_to_cloudinary(file_path)
         print(file_url)
@@ -107,3 +127,67 @@ def upload_file():
         "msg": "Data saved successfully",
         "file_url": file_url if file_url else "No file uploaded"
     }), 201
+
+@auth_bp.route('/upload-audio', methods=['POST'])
+def upload_audio():
+    if 'audio' not in request.files:
+        return jsonify({"msg": "No audio file uploaded"}), 400  # ✅ Ensure JSON response
+
+    file = request.files['audio']
+    user_email = request.form.get("user_email")
+    
+    if not user_email:
+        return jsonify({"msg": "User email is required"}), 400
+
+    try:
+        file_path = f"temp_{file.filename}"
+        file.save(file_path)
+
+        # Upload to Cloudinary
+        file_url = upload_to_cloudinary(file_path)
+
+        if not file_url:
+            return jsonify({"msg": "File upload failed"}), 500  # ✅ Ensure JSON response
+
+        # Save file info to database
+        file_data = CloudStorage(user_email, file_url, "audio/wav")
+        file_data.save_to_db()
+
+        return jsonify({
+            "msg": "Audio uploaded successfully!",
+            "file_url": file_url
+        }), 201
+
+    except Exception as e:
+        return jsonify({"msg": "Internal Server Error", "error": str(e)}), 500  # ✅ Always return JSON
+
+
+
+@auth_bp.route('/<id>/generate-song', methods=['POST'])
+
+def generate_song(id):
+    # mood = request.json.get('mood')
+    # song_number = request.json.get('song_number')
+    # tempo = 120
+    # scale_type = 0
+
+    # if song_number > 5:
+    #     return jsonify({"msg": "Song Limit reached!!"}), 200
+
+
+    # if mood == 'Cheerful':
+    #     tempo = 130
+    # elif mood == 'Sorrow':
+    #     tempo = 104
+    #     scale_type = 1
+    # elif mood == 'Up Lifting':
+    #     tempo = 120
+    #     scale_type = 0
+    # elif mood == 'Dark':
+    #     tempo = 100
+    #     scale_type = 1
+    
+    # generate_midi(tempo=tempo, output_file=f"{id}-{song_number}", scale_type=scale_type)
+
+    file_path = "gana.wav"
+    return send_file(file_path, as_attachment=True), 200

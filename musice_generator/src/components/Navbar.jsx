@@ -45,8 +45,8 @@ const Navbar = () => {
         >
           My Tracks
         </NavLink>
-        
-        
+
+
 
         <div className="relative inline-flex">
           <NavLink

@@ -53,3 +53,6 @@ const MusicGenerated = () => {
 };
 
 export default MusicGenerated;
+
+
+// the music that is generaate will send to the backend and in backend i will prepare a api that will upload song to the database and i will connect the model of song by type.modle.objectby id 

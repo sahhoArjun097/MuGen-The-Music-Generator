@@ -22,8 +22,9 @@ const LoginPage = () => {
     try {
       setIsLoading(true);
       const response = await api.post("/login", formData);
-
+      
       if (response.status) {
+        console.log(response.data)
         localStorage.setItem("user", JSON.stringify(response.data.user));
         navigate("/dashboard");
       }
