@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import api from "../api";
 import MusicPlayer from "../components/MusicPlayer";
 import { motion } from "framer-motion";
@@ -11,44 +11,47 @@ const MoodselectionPage = () => {
     const moods = ["Cheerful", "Sorrow", "Up Lifting", "Dark"];
     const [show, setShow] = useState(!!localStorage.getItem("audioSrc")); // Show MusicPlayer if audio exists
     const userId = "1235";
-
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
-
     const handleGenerateMusic = async () => {
         if (!selectedOption) {
             alert("Please select a mood first");
             return;
         }
-
-
         try {
-            setIsLoading(true);
-            setError("");
             localStorage.removeItem("audioSrc");
-
             const response = await api.post(
                 `/${userId}/generate-song`,
                 { mood: selectedOption, song_number: 5 },
                 { responseType: "blob", timeout: 500000 }
             );
-            setIsLoading(false);
             const data = await response.data;
             console.log(data)
             const audioUrl = URL.createObjectURL(data);
+            // const audioBlob = new Blob([await response.data], { type: "audio/wav" });
             console.log(audioUrl)
             console.log("Generated audio URL:", audioUrl); 
             localStorage.setItem("audioSrc", audioUrl);
             setShow(true);
-
+            // await uploadGeneratedMusic(audioBlob);
         } catch (error) {
-            setIsLoading(false);
             console.error(error);
-            setError("An error occurred while generating the song.");
             alert("An error occurred while generating the song.");
         }
     };
-
+    // const uploadGeneratedMusic = async (audioBlob) => {
+    //     try {
+    //         const file = new File([audioBlob], "generated_music.wav", { type: "audio/wav" });
+    //         const formData = new FormData();
+    //         formData.append("audio", file);
+    //         const res = await api.post("/upload-audio", {
+    //             body: formData,
+    //         });
+    //         console.log(res)
+    //         const result = await res.json();
+    //         console.log("Upload result:", result);
+    //     } catch (error) {
+    //         console.error("Error uploading generated audio:", error);
+    //     }
+    // };
     return (
         <>
            {
@@ -93,16 +96,13 @@ const MoodselectionPage = () => {
                             />
                             <p className="text-lg text-gray-300 mt-1">{length}s</p>
                         </div>
-                        {/* Cost Display */}
                         <p className="text-lg text-gray-400 mt-3">Cost: {Math.ceil(length / 10)} tokens</p>
-                        {/* Generate Button */}
                         <motion.button
                             onClick={handleGenerateMusic} className="mt-6 bg-yellow-500 text-black p-2 rounded-lg w-full font-bold text-lg hover:bg-yellow-600 transition-all"
                         >
                             Generate Music
                         </motion.button>
                     </motion.div>
-                    {/* Side Boxes */}
                     <div className="flex flex-col  items-center justify-center  space-y-10">
 
                         <motion.div
@@ -119,7 +119,6 @@ const MoodselectionPage = () => {
                                 </motion.button>
                             </Link>
                         </motion.div>
-                        {/* History Box */}
                         <motion.div
                             className="bg-white p-10 rounded-xl shadow-lg md:w-96 w-64 text-center backdrop-blur-lg bg-opacity-10 border border-gray-700"
                         >
@@ -130,15 +129,10 @@ const MoodselectionPage = () => {
                 </div>
             </div>
              )
-
-
             }
-             
-
         </>
     );
 };
-
 export default MoodselectionPage;
 
 
@@ -163,50 +157,3 @@ export default MoodselectionPage;
 
 
 
-
-
-
-// <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
-//   <h1 className="sm:text-6xl md:text-6xl lg:text-7xl text-5xl font-bold mb-8">
-//     Generate Music
-//   </h1>
-//   <p className="text-lg mb-9">Choose a mood to create your track.</p>
-
-//   <div className="w-full max-w-md">
-//     <label className="block text-lg mb-2">Select mood</label>
-//     <select
-//       value={selectedOption}
-//       onChange={(e) => setSelectedOption(e.target.value)}
-//       className="w-full px-4 py-2 mb-4 bg-gray-800 text-white border border-gray-700 rounded-lg cursor-pointer"
-//     >
-//       <option value="" disabled>
-//         Choose a mood
-//       </option>
-//       {moods.map((mood) => (
-//         <option key={mood} value={mood}>
-//           {mood}
-//         </option>
-//       ))}
-//     </select>
-
-//     <button
-//       onClick={handleGenerate}
-//       disabled={isLoading}
-//       className="w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
-//     >
-//       {isLoading ? "Generating..." : "Generate"}
-//     </button>
-
-//     {/* Loading Spinner */}
-//     {!isShow && isLoading && (
-//       <div className="flex flex-col gap-4 mt-4 w-full items-center justify-center">
-//         <div className="w-20 h-20 border-4 border-transparent animate-spin border-t-blue-500 rounded-full">
-//           <div className="w-16 h-16 border-4 border-transparent animate-spin border-t-purple-500 rounded-full"></div>
-//         </div>
-//       </div>
-//     )}
-//   </div>
-
-//   {/* Show Music Player if audio is generated */}
-//   {isShow && <MusicPlayer />}
-// </div>

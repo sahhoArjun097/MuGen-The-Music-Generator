@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import DashboardPage from "./pages/Dashboard";
 import MyMusicPage from "./pages/MyMusic";
-import GeneratePage from "./pages/GeneratePage";
 import ProfilePage from "./pages/Profile"; // Renamed 'Pattern' to 'ProfilePage' for clarity
 import Pricing from "./pages/Pricing";
 import MoodselectionPage from "./pages/MoodselectionPage";
@@ -20,7 +19,6 @@ const App = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/generate" element={<MoodselectionPage/>} />
-        {/* <Route path="/generate" element={<GeneratePage />} /> */}
         <Route path="/mymusic" element={<MyMusicPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/pricing" element={<Pricing />} />

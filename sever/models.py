@@ -28,6 +28,13 @@ class User:
     def verify_password(input_password, stored_password):
         return bcrypt.check_password_hash(stored_password, input_password)
 
+
+
+
+
+
+
+
 class CloudStorage:
     def __init__(self, email, file_url, file_type):
         self.email = email
