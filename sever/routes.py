@@ -173,6 +173,8 @@ def upload_audio():
 @auth_bp.route('/<id>/generate-song', methods=['POST'])
 
 def generate_song(id):
+    file_path = "gana2.mp3"
+    return send_file(file_path, as_attachment=True), 200
     # mood = request.json.get('mood')
     # song_number = request.json.get('song_number')
     # tempo = 120
@@ -196,5 +198,4 @@ def generate_song(id):
     
     # generate_midi(tempo=tempo, output_file=f"{id}-{song_number}", scale_type=scale_type)
 
-    file_path = "gana.wav"
-    return send_file(file_path, as_attachment=True), 200
+    
