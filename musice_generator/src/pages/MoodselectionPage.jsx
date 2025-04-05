@@ -3,14 +3,18 @@ import api from "../api";
 import MusicPlayer from "../components/MusicPlayer";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const MoodselectionPage = () => {
     const [selectedOption, setSelectedOption] = useState("");
     const [tokens, setTokens] = useState(200);
+    const userData = useSelector((state)=>state.authSlice.userData)
     const [length, setLength] = useState(70);
     const moods = ["Cheerful", "Sorrow", "Up Lifting", "Dark"];
     const [show, setShow] = useState(!!localStorage.getItem("audioSrc")); // Show MusicPlayer if audio exists
-    const userId = "1235";
+    const userId = userData._id.$oid;
+    console.log(userId)
+    console.log(userData)
     const handleGenerateMusic = async () => {
         if (!selectedOption) {
             alert("Please select a mood first");
@@ -23,6 +27,7 @@ const MoodselectionPage = () => {
                 { mood: selectedOption, song_number: 5 },
                 { responseType: "blob", timeout: 500000 }
             );
+            
             const data = await response.data;
             console.log(data)
             const audioUrl = URL.createObjectURL(data);
@@ -37,21 +42,7 @@ const MoodselectionPage = () => {
             alert("An error occurred while generating the song.");
         }
     };
-    // const uploadGeneratedMusic = async (audioBlob) => {
-    //     try {
-    //         const file = new File([audioBlob], "generated_music.wav", { type: "audio/wav" });
-    //         const formData = new FormData();
-    //         formData.append("audio", file);
-    //         const res = await api.post("/upload-audio", {
-    //             body: formData,
-    //         });
-    //         console.log(res)
-    //         const result = await res.json();
-    //         console.log("Upload result:", result);
-    //     } catch (error) {
-    //         console.error("Error uploading generated audio:", error);
-    //     }
-    // };
+  
     return (
         <>
            {

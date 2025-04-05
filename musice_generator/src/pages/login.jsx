@@ -2,12 +2,16 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api";
 import { signInWithGoogle } from "../config/FireBaseAuth";
+import { useDispatch } from "react-redux";
 import "./pages.css";
+import { addUser } from "../utils/authslice";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
+  
   const navigate = useNavigate();
+  const dispatch  = useDispatch()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,8 +28,9 @@ const LoginPage = () => {
       const response = await api.post("/login", formData);
       
       if (response.status) {
+        // console.log(userData)
         console.log(response.data)
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        dispatch(addUser(response.data.user));
         navigate("/dashboard");
       }
     } catch (error) {
@@ -54,8 +59,8 @@ const LoginPage = () => {
         };
         const response = await api.post("/google-login", userData);
         if (response.status === 200) {
-          localStorage.setItem("user", JSON.stringify(response.data.user));
-          localStorage.setItem("access_token", response.data.access_token);
+          console.log(response.data.user)
+          dispatch(addUser(response.data));
           navigate("/dashboard");
         } else {
           alert("Error saving user data");
