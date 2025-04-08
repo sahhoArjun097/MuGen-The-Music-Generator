@@ -30,7 +30,7 @@ const LoginPage = () => {
       if (response.status) {
         // console.log(userData)
         console.log(response.data)
-        dispatch(addUser(response.data.user));
+        dispatch(addUser(response.data));
         navigate("/dashboard");
       }
     } catch (error) {
@@ -50,7 +50,7 @@ const LoginPage = () => {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithGoogle();
-      if (result.user) {
+      if (result) {
         const userData = {
           email: result.user.email,
           name: result.user.displayName,
@@ -59,7 +59,7 @@ const LoginPage = () => {
         };
         const response = await api.post("/google-login", userData);
         if (response.status === 200) {
-          console.log(response.data.user)
+         
           dispatch(addUser(response.data));
           navigate("/dashboard");
         } else {

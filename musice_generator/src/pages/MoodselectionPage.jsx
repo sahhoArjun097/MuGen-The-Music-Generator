@@ -8,11 +8,11 @@ import { useSelector } from "react-redux";
 const MoodselectionPage = () => {
     const [selectedOption, setSelectedOption] = useState("");
     const [tokens, setTokens] = useState(200);
-    const userData = useSelector((state)=>state.authSlice.userData)
+    const userData = useSelector((state)=>state.authSlice.userData.user)
     const [length, setLength] = useState(70);
     const moods = ["Cheerful", "Sorrow", "Up Lifting", "Dark"];
     const [show, setShow] = useState(!!localStorage.getItem("audioSrc")); // Show MusicPlayer if audio exists
-    const userId = userData._id.$oid;
+    const userId = userData.id;
     console.log(userId)
     console.log(userData)
     const handleGenerateMusic = async () => {

@@ -78,9 +78,7 @@ def google_login():
             "name": name,
             "profile_picture": profile_picture,
             "token":token,
-            "songs":songs
-           
-           
+            "songs":songs 
         }
         User.save_google_user(new_user)  # Function to store Google user in DB
     access_token = create_access_token(identity=email)
@@ -88,20 +86,11 @@ def google_login():
 
     return jsonify({"access_token": access_token, "user": user, "msg": "Google login successful"}), 200
 
-
-
-
-
-
 # Logout route
 @auth_bp.route('/logout', methods=['POST'])
 @jwt_required()
 def logout():
     return jsonify({"msg": "Successfully logged out"}), 200
-
-
-
-
 
 
 @auth_bp.route('/upload', methods=['POST'])
@@ -186,3 +175,9 @@ def generate_song(id):
     #     scale_type = 1
     
     # generate_midi(tempo=tempo, output_file=f"{id}-{song_number}", scale_type=scale_type)
+
+
+
+
+
+
