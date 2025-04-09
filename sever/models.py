@@ -6,24 +6,39 @@ mongo = PyMongo()
 bcrypt = Bcrypt()
 
 class User:
-    def __init__(self, email, password):
+    def __init__(self, email, password, token):
         self.email = email
         self.password = password
-    
+        self.token = token
+
     def save_to_db(self):
         hashed_password = bcrypt.generate_password_hash(self.password).decode("utf-8")
-        user_data = {"email": self.email, "password": hashed_password}
+        user_data = {
+            "email": self.email,
+            "password": hashed_password,
+            "token": self.token
+        }
         mongo.db.users.insert_one(user_data)
-    
-    @staticmethod
-    def save_google_user(user_data):
-        """Save Google authenticated users"""
-        mongo.db.users.insert_one(user_data)
- 
+
     @staticmethod
     def find_by_email(email):
         return mongo.db.users.find_one({"email": email})
-    
+
+    # @staticmethod
+    # def deduct_token(email):
+    #     user = mongo.db.users.find_one({"email": email})
+    #     if not user:
+    #         raise ValueError("User not found")
+
+    #     if user.get("token", 0) <= 0:
+    #         raise ValueError("No tokens left")
+
+    #     mongo.db.users.update_one(
+    #         {"email": email},
+    #         {"$inc": {"token": -1}}
+    #     )
+    #     return True
+
     @staticmethod
     def verify_password(input_password, stored_password):
         return bcrypt.check_password_hash(stored_password, input_password)

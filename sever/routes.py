@@ -22,7 +22,8 @@ def register():
     if User.find_by_email(data['email']):
         return jsonify({"msg": "User already exists"}), 400
     
-    new_user = User(data['email'], data['password'])
+    new_user = User(data['email'], data['password'], data['token'])
+
     new_user.save_to_db()
     
     return jsonify({"msg": "User created successfully"}), 201
@@ -135,24 +136,29 @@ def upload_file(file=None, user_email=None):
         return jsonify({"msg": "File upload failed", "error": str(e)}), 500
 
 
- 
 @auth_bp.route('/<id>/generate-song', methods=['POST'])
 def generate_song(id):
     file_path = "songs/gana2.mp3"  
 
     try:
+        # ✅ Deduct a token before generating the song
+        # User.deduct_token(id)  # <-- your custom method to reduce token count
+
         # Convert file into a FileStorage object (to send it to upload function)
         with open(file_path, "rb") as f:
             file_obj = FileStorage(f, filename="gana2.mp3", content_type="audio/mp3")
 
-            # ✅ Call `upload_file()` function with generated file
+            # ✅ Upload the file
             response = upload_file(file_obj, id)
 
-        # ✅ Send file to frontend after uploading
+        # ✅ Return file to frontend
         return send_file(file_path, as_attachment=True)
 
+    except ValueError as ve:
+        return jsonify({"msg": str(ve)}), 400
     except Exception as e:
         return jsonify({"msg": "Error generating song", "error": str(e)}), 500
+
     # mood = request.json.get('mood')
     # song_number = request.json.get('song_number')
     # tempo = 120

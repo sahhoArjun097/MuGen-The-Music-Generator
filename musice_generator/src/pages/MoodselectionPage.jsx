@@ -12,7 +12,7 @@ const MoodselectionPage = () => {
     const [length, setLength] = useState(70);
     const moods = ["Cheerful", "Sorrow", "Up Lifting", "Dark"];
     const [show, setShow] = useState(!!localStorage.getItem("audioSrc")); // Show MusicPlayer if audio exists
-    const userId = userData.id;
+    const userId = userData.id || userData._id?.$oid;
     console.log(userId)
     console.log(userData)
     const handleGenerateMusic = async () => {
