@@ -11,7 +11,7 @@ app.config.from_object(Config)
 # Initialize extensions
 mongo.init_app(app)
 jwt = JWTManager(app)
-CORS(app, origins=["http://localhost:5173"])  # Adjust frontend URL
+CORS(app, origins=["http://localhost:5173"])  
 
 # Register routes
 app.register_blueprint(auth_bp, url_prefix='/')

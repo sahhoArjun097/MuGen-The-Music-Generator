@@ -40,12 +40,10 @@ def login():
         access_token = create_access_token(identity=user['email'])
 
         user_data = {
-            # Convert ObjectId to string
-     
             "id":str(user["_id"]),
             "email": user["email"],
             "tokens": user.get("tokens", 500),
-            "songs": user.get("songs", []),  # Fetch songs
+            "songs": user.get("songs", []), # Fetch song
         }
         return jsonify({
             "access_token": access_token,
