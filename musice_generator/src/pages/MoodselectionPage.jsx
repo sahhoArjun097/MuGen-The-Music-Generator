@@ -4,12 +4,14 @@ import MusicPlayer from "../components/MusicPlayer";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { deductToken } from "../utils/authslice";
 
 const MoodselectionPage = () => {
     const [selectedOption, setSelectedOption] = useState("");
-    const [tokens, setTokens] = useState(200);
     const userData = useSelector((state)=>state.authSlice.userData.user)
     const [length, setLength] = useState(70);
+    const dispatch = useDispatch();
     const moods = ["Cheerful", "Sorrow", "Up Lifting", "Dark"];
     const [show, setShow] = useState(!!localStorage.getItem("audioSrc")); // Show MusicPlayer if audio exists
     const userId = userData.id || userData._id?.$oid;
@@ -21,12 +23,18 @@ const MoodselectionPage = () => {
             return;
         }
         try {
-            localStorage.removeItem("audioSrc");
+            if(userData.tokens == 0){
+            alert("not enough tokens")
+            return 
+             }
+            localStorage.removeItem("audioSrc"); 
+            dispatch(deductToken(50));
             const response = await api.post(
-                `/${userId}/generate-song`,
-                { mood: selectedOption, song_number: 5 },
+                `/${userId}/generate-song`, 
+                { mood: selectedOption, song_number: 5, email: userData.email},
                 { responseType: "blob", timeout: 500000 }
             );
+            
             
             const data = await response.data;
             console.log(data)
@@ -100,7 +108,7 @@ const MoodselectionPage = () => {
                             className="bg-white p-10 rounded-xl shadow-lg md:w-96  w-64 text-center backdrop-blur-lg bg-opacity-10 border border-gray-700"
                         >
                             <h3 className="text-2xl font-semibold text-white">Your Tokens</h3>
-                            <p className="text-5xl font-bold text-yellow-500">{tokens}</p>
+                            <p className="text-5xl font-bold text-yellow-500">{userData.tokens}</p>
                             <Link to="/pricing">
                                 <motion.button
                                     className="mt-5 bg-gray-200 p-4 rounded-lg w-full text-black font-bold hover:bg-gray-300 transition-all"

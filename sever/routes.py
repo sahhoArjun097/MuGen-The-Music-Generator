@@ -5,7 +5,8 @@ from models import CloudStorage
 from config import cloudinary
 from werkzeug.datastructures import FileStorage
 from config import  upload_to_cloudinary
-
+import io
+import threading
 auth_bp = Blueprint('auth', __name__)
 from flask_bcrypt import Bcrypt
 import uuid
@@ -22,7 +23,7 @@ def register():
     if User.find_by_email(data['email']):
         return jsonify({"msg": "User already exists"}), 400
     
-    new_user = User(data['email'], data['password'], data['token'])
+    new_user = User(data['email'], data['password'])
 
     new_user.save_to_db()
     
@@ -89,67 +90,66 @@ def google_login():
 @auth_bp.route('/logout', methods=['POST'])
 @jwt_required()
 def logout():
-    return jsonify({"msg": "Successfully logged out"}), 200
+    return jsonify({"msg": "Successfully logged out"}), 
 
 
-@auth_bp.route('/upload', methods=['POST'])
-def upload_file(file=None, user_email=None):
-    """Handles file upload from both user and generated song."""
-      # Get the uploaded file from request
+    
+@auth_bp.route('/<email>/songs', methods=['GET'])
+def get_songs_by_email(email):
+    songs = CloudStorage.get_files_by_email(email)
+    return jsonify(songs), 200
 
-    if user_email is None:
-        user_email = request.form.get("user_email")
 
-    if not user_email:
-        return jsonify({"msg": "User email is required"}), 400
+def perform_upload(file, email,mood):
+    """Core logic for uploading the file"""
+    if not email:
+        raise ValueError("User email is required")
 
     if not file:
-        return jsonify({"msg": "No file uploaded"}), 400
+        raise ValueError("No file uploaded")
 
     if not file.filename.endswith('.mp3'):
-        return jsonify({"msg": "Only MP3 files are allowed"}), 400
+        raise ValueError("Only MP3 files are allowed")
 
-    file_path = f"temp_{file.filename}"  # Save file temporarily
+    file_path = f"temp_{file.filename}"
     file.save(file_path)
 
     try:
-        # ✅ Upload to Cloudinary
+        # Upload to Cloudinary
         upload_result = cloudinary.uploader.upload(file_path, resource_type="video")
         file_url = upload_result.get("secure_url")
 
-        # ✅ Save to MongoDB
-        file_data = CloudStorage(user_email, file_url, "audio")
+        # Save to MongoDB
+        file_data = CloudStorage(email, file_url,mood, "audio")
+        
         file_data.save_to_db()
 
-        # ✅ Delete the local file after upload
-        os.remove(file_path)
+        return file_url
+    finally:
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
-        return jsonify({
-            "msg": "File uploaded successfully",
-            "file_url": file_url
-        }), 201
-
-    except Exception as e:
-        os.remove(file_path)  # Cleanup on error
-        return jsonify({"msg": "File upload failed", "error": str(e)}), 500
 
 
 @auth_bp.route('/<id>/generate-song', methods=['POST'])
 def generate_song(id):
-    file_path = "songs/gana2.mp3"  
-
+    file_path = "songs/gana2.mp3"
+    data = request.get_json()
+    print(data)
     try:
-        # ✅ Deduct a token before generating the song
-        # User.deduct_token(id)  # <-- your custom method to reduce token count
-
-        # Convert file into a FileStorage object (to send it to upload function)
         with open(file_path, "rb") as f:
-            file_obj = FileStorage(f, filename="gana2.mp3", content_type="audio/mp3")
+            file_content = f.read()
 
-            # ✅ Upload the file
-            response = upload_file(file_obj, id)
+        file_obj = FileStorage(
+            stream=io.BytesIO(file_content),
+            filename="gana2.mp3",
+            content_type="audio/mp3"
+        )
 
-        # ✅ Return file to frontend
+        # Background upload (no Flask context needed!)
+        threading.Thread(target=perform_upload, args=(file_obj, data['email'],data['mood'])).start()
+
+        # Return file to frontend
         return send_file(file_path, as_attachment=True)
 
     except ValueError as ve:
@@ -184,4 +184,40 @@ def generate_song(id):
 
 
 
+# @auth_bp.route('/upload', methods=['POST'])
+# def upload_file(file=None, user_email=None):
+#     """Handles file upload from both user and generated song."""
+#       # Get the uploaded file from request
+#     if user_email is None:
+#         user_email = request.form.get("user_email")
+
+#     if not user_email:
+#         return jsonify({"msg": "User email is required"}), 400
+
+#     if not file:
+#         return jsonify({"msg": "No file uploaded"}), 400
+
+#     if not file.filename.endswith('.mp3'):
+#         return jsonify({"msg": "Only MP3 files are allowed"}), 400
+
+#     file_path = f"temp_{file.filename}"  # Save file temporarily
+#     file.save(file_path)
+
+#     try:
+#         # ✅ Upload to Cloudinary
+#         upload_result = cloudinary.uploader.upload(file_path, resource_type="video")
+#         file_url = upload_result.get("secure_url")
+
+#         # ✅ Save to MongoDB
+#         file_data = CloudStorage(user_email, file_url, "audio")
+#         file_data.save_to_db()
+
+#         return jsonify({
+#             "msg": "File uploaded successfully",
+#             "file_url": file_url
+#         }), 201
+
+#     except Exception as e:
+#         os.remove(file_path)  # Cleanup on error
+#         return jsonify({"msg": "File upload failed", "error": str(e)}), 500
 

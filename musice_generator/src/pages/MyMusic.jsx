@@ -1,52 +1,56 @@
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
-const MyMusicPage = () => {
-  const tracks = [
-    {
-      id: 1,
-      title: "Track Title 1",
-      genre: "Pop",
-      date: "2024-12-01",
-      audioUrl: "track1.mp3",
-    },
-    {
-      id: 2,
-      title: "Track Title 2",
-      genre: "Rock",
-      date: "2024-12-05",
-      audioUrl: "track2.mp3",
-    },
-  ];
+function MyMusic() {
+  const [songs, setSongs] = useState([]);
+  const userData = useSelector((state) => state.authSlice.userData.user);
 
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/${userData.email}/songs`);
+        setSongs(res.data);
+      } catch (err) {
+        console.error("Failed to fetch songs", err);
+      }
+    };
+
+    if (userData?.email) fetchSongs();
+  }, [userData]);
 
   return (
-    <div className="homeBackgroundImage min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
-      <h1 className="tsm:text-6xl md:text-6xl lg:text-7xl text-5xl font-bold mb-8">My Music</h1>
-      <p className="text-lg mb-8">Here are your saved tracks:</p>
-      <div className="w-[90%] max-w-2xl">
-        {tracks.map((track) => (
-          <div
-            key={track.id}
-            className="flex flex-col sm:flex-row justify-between items-center p-4 mb-4 bg-gray-800 rounded-lg shadow-lg"
-          >
-            <div className="flex-1 mb-4 sm:mb-0 sm:mr-4">
-              <h2 className="text-xl font-semibold">{track.title}</h2>
-              <p className="text-sm text-gray-400">Genre: {track.genre}</p>
-              <p className="text-sm text-gray-400">Created on: {track.date}</p>
-            </div>
-            <div className="flex flex-col items-center sm:items-end">
+    <div className=" p-6  mx-auto bg-black w-full h-full">
+      <h2 className="text-3xl font-bold mb-6 text-center text-white mt-32">🎵 My Tracks</h2>
+
+      {songs.length === 0 ? (
+        <p className="text-center text-gray-400">No songs uploaded yet.</p>
+      ) : (
+        <div className="grid gap-6 p-16">
+          {songs.map((song, idx) => (
+            <div
+              key={idx}
+              className="bg-gradient-to-r from-gray-800 to-gray-900 p-5 rounded-lg shadow-md flex flex-col sm:flex-row items-center justify-between"
+            >
+              <div className="flex-1 mb-4 sm:mb-0">
+                <p className="text-white font-semibold text-lg mb-2 truncate">{`Track ${idx + 1}`}</p>
+                <p className="text-sm text-blue-300">Mood: {song.file_mood || "Unknown"}</p>
+              </div>
+
+
               <audio
                 controls
-                className="w-full max-w-sm sm:w-auto"
+                src={song.file_url}
+                className="w-full sm:w-64 outline-none rounded-lg"
               >
-                <source src={`../assets/${track.audioUrl}`} type="audio/mpeg" />
                 Your browser does not support the audio element.
               </audio>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
-};
+}
 
-export default MyMusicPage;
+export default MyMusic;
