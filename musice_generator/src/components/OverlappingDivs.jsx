@@ -2,11 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const FishLogo = ({ color, size = "medium" }) => {
-  return (
-    <div className={`text-${color} ${size === "small" ? "text-lg" : "text-3xl"}`}>🐟</div>
-  );
-};
+
 
 export default function OverlappingDivs() {
   return (

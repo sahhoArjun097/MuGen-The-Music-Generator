@@ -3,15 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api";
 import { signInWithGoogle } from "../config/FireBaseAuth";
 import { useDispatch } from "react-redux";
-import "./pages.css";
+// import "./pages.css";
 import { addUser } from "../utils/authslice";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const navigate = useNavigate();
-  const dispatch  = useDispatch()
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +26,7 @@ const LoginPage = () => {
     try {
       setIsLoading(true);
       const response = await api.post("/login", formData);
-      
+
       if (response.status) {
         // console.log(userData)
         console.log(response.data)
@@ -59,7 +59,7 @@ const LoginPage = () => {
         };
         const response = await api.post("/google-login", userData);
         if (response.status === 200) {
-         
+
           dispatch(addUser(response.data));
           navigate("/dashboard");
         } else {
@@ -70,9 +70,9 @@ const LoginPage = () => {
       console.error("Google Sign-In Error:", error);
     }
   };
-  
+
   return (
-    <div className="min-h-screen w-[100vw] flex items-center justify-center bg-cover bg-center loginBackgroundImage">
+    <div className="min-h-screen  flex items-center justify-center bg-cover bg-center loginBackgroundImage">
       <div className="bg-opacity-0 backdrop-blur-xl p-8 rounded-lg shadow-lg sm:w-full max-w-md w-[95%]">
         <h1 className="text-3xl font-bold text-center text-purple-300 mb-6">Login</h1>
         <form onSubmit={login}>

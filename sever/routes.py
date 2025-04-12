@@ -11,9 +11,11 @@ auth_bp = Blueprint('auth', __name__)
 from flask_bcrypt import Bcrypt
 import uuid
 import os
-
-
+from bson import ObjectId
 bcrypt = Bcrypt()
+
+# register
+
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -30,7 +32,7 @@ def register():
     return jsonify({"msg": "User created successfully"}), 201
 
 
-from bson import ObjectId
+# login 
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
@@ -43,8 +45,8 @@ def login():
         user_data = {
             "id":str(user["_id"]),
             "email": user["email"],
-            "tokens": user.get("tokens", 500),
-            "songs": user.get("songs", []), # Fetch song
+            "token": user.get("token", 500),
+            "songs": user.get("songs", []), 
         }
         return jsonify({
             "access_token": access_token,
@@ -56,13 +58,15 @@ def login():
 
 
 # Google Login route
+
+
 @auth_bp.route('/google-login', methods=['POST'])
 def google_login():
     data = request.get_json()
     email = data.get("email")
     name = data.get("name")
     profile_picture = data.get("profile_picture")
-    token = data.get("Token")
+    token = data.get("token")
     songs = data.get("songs")
     if not email:
         return jsonify({"error": "Invalid data"}), 400
@@ -80,11 +84,14 @@ def google_login():
             "token":token,
             "songs":songs 
         }
-        User.save_google_user(new_user)  # Function to store Google user in DB
+        User.save_google_user(new_user) 
     access_token = create_access_token(identity=email)
     user = User.find_by_email(email)
 
     return jsonify({"access_token": access_token, "user": user, "msg": "Google login successful"}), 200
+
+
+
 
 # Logout route
 @auth_bp.route('/logout', methods=['POST'])
@@ -93,12 +100,17 @@ def logout():
     return jsonify({"msg": "Successfully logged out"}), 
 
 
-    
+
+
+
+# addign songs to the user  
 @auth_bp.route('/<email>/songs', methods=['GET'])
 def get_songs_by_email(email):
     songs = CloudStorage.get_files_by_email(email)
     return jsonify(songs), 200
 
+
+# uploading song to the cloudinary
 
 def perform_upload(file, email,mood):
     """Core logic for uploading the file"""
@@ -115,22 +127,19 @@ def perform_upload(file, email,mood):
     file.save(file_path)
 
     try:
-        # Upload to Cloudinary
+
         upload_result = cloudinary.uploader.upload(file_path, resource_type="video")
         file_url = upload_result.get("secure_url")
 
-        # Save to MongoDB
         file_data = CloudStorage(email, file_url,mood, "audio")
-        
         file_data.save_to_db()
-
         return file_url
     finally:
         if os.path.exists(file_path):
             os.remove(file_path)
 
 
-
+# generating song to the 
 @auth_bp.route('/<id>/generate-song', methods=['POST'])
 def generate_song(id):
     file_path = "songs/gana2.mp3"
@@ -145,13 +154,8 @@ def generate_song(id):
             filename="gana2.mp3",
             content_type="audio/mp3"
         )
-
-        # Background upload (no Flask context needed!)
         threading.Thread(target=perform_upload, args=(file_obj, data['email'],data['mood'])).start()
-
-        # Return file to frontend
         return send_file(file_path, as_attachment=True)
-
     except ValueError as ve:
         return jsonify({"msg": str(ve)}), 400
     except Exception as e:

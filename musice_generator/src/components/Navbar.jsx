@@ -1,12 +1,19 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { removeUser } from "../utils/authslice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const userData = useSelector((state) => state.authSlice.userData.user)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+    dispatch(removeUser());
+    navigate("/")
   };
 
   return (
@@ -53,8 +60,20 @@ const Navbar = () => {
             to=""
             className="text-md px-2 font-semibold transition-all duration-150"
           >
-            <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center font-bold shadow-lg">
-              <span className="text-white">P</span>
+            <div className="w-10 h-10 rounded-full border-e-8  flex items-center justify-center font-bold shadow-lg">
+              <div className="w-10 h-10 rounded-full  text-white flex items-center justify-center overflow-hidden">
+                {userData.profile_picture ? (
+                  <img
+                    src={userData.profile_picture}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-lg font-semibold">
+                    {userData.email?.[0]?.toUpperCase()}
+                  </span>
+                )}
+              </div>
             </div>
           </NavLink>
 
@@ -94,15 +113,14 @@ const Navbar = () => {
               >
                 Settings
               </NavLink>
-              <NavLink to="/">
-                <button
-                  type="button"
-                  className="block w-full px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50"
-                >
-                  Logout
-                </button>
 
-              </NavLink>
+              <button
+                onClick={toggleMenu}
+                type="button"
+                className="block w-full px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50"
+              >
+                Logout
+              </button>
 
             </div>
           )}
@@ -180,14 +198,13 @@ const Navbar = () => {
             My Tracks
           </NavLink>
         </div>
-        <NavLink to="/login">
-          <button
-            onClick={toggleMenu}
-            className="text-purple-900 bg-white rounded-full py-4 px-12 text-md font-semibold hover:bg-opacity-75 transition-all duration-150"
-          >
-            Logout
-          </button>
-        </NavLink>
+
+        <button
+          onClick={toggleMenu}
+          className="text-purple-900 bg-white rounded-full py-4 px-12 text-md font-semibold hover:bg-opacity-75 transition-all duration-150"
+        >
+          Logout
+        </button>
       </div>
     </nav>
   );

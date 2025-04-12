@@ -23,13 +23,19 @@ const App = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/pricing" element={<Pricing />} />
       </Routes>
-      <Footer />
+      <ConditionalFooter />
     </Router>
   );
 };
 
 // Component to conditionally render Navbar
 const ConditionalNavbar = () => {
+  const location = useLocation();
+  const hideNavbarPaths = ["/", "/signup"];
+
+  return hideNavbarPaths.includes(location.pathname) ? null : <Navbar />;
+};
+const ConditionalFooter = () => {
   const location = useLocation();
   const hideNavbarPaths = ["/", "/signup"];
 
