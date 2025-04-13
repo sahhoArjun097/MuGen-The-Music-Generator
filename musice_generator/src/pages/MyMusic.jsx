@@ -20,7 +20,7 @@ function MyMusic() {
   }, [userData]);
 
   return (
-    <div className=" p-6  mx-auto bg-black w-full h-full">
+    <div className=" p-6   mx-auto bg-black w-full min-h-screen">
       <h2 className="text-3xl font-bold mb-6 text-center text-white mt-32">🎵 My Tracks</h2>
 
       {songs.length === 0 ? (

@@ -23,7 +23,7 @@ const App = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/pricing" element={<Pricing />} />
       </Routes>
-      <ConditionalFooter />
+      <Footer />
     </Router>
   );
 };

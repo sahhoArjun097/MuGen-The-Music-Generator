@@ -22,6 +22,29 @@ class User:
         }
         mongo.db.users.insert_one(user_data)
 
+    
+    @staticmethod 
+    def deduct_token(email, cost):
+        user = mongo.db.users.find_one({"email":email})
+        current_tokens = user.get("token", 0)
+        if current_tokens < cost:
+          return False, "Insufficient tokens"
+        new_tokens = current_tokens - cost
+        result = mongo.db.users.update_one(
+               {"email": email},
+               {"$set": {"token": new_tokens}}
+
+        )
+        if result.modified_count == 1:
+            return True, new_tokens
+        else:
+            return False, "Token update failed"
+
+        
+    @staticmethod
+    def save_google_user(user_data):
+        """Save Google authenticated users"""
+        mongo.db.users.insert_one(user_data)
     @staticmethod
     def find_by_email(email):
         return mongo.db.users.find_one({"email": email})
@@ -29,6 +52,7 @@ class User:
     @staticmethod
     def verify_password(input_password, stored_password):
         return bcrypt.check_password_hash(stored_password, input_password)
+        
 
 
 

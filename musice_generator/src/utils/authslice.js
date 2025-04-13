@@ -17,12 +17,19 @@ const  authSlice = createSlice({
       },
       deductToken: (state, action) => {
          if (state.userData && state.userData.user) {
-           state.userData.user.tokens -= action.payload || 50;
+           state.userData.user.token -= action.payload || 50;
            localStorage.setItem("userData", JSON.stringify(state.userData));
          }
-       }
-   
+       },
+       addAudioSrc  : (state,action)=>{
+         state.audioUrl = action.payload
+         localStorage.setItem("audioSrc",action.payload)
+       },
+       removeAudioUrl : (state)=>{
+         state.audioUrl = null
+         localStorage.removeItem("audioSrc")
+       }   
    }
 })
-export const { addUser, removeUser, deductToken } = authSlice.actions
+export const { addUser, removeUser, deductToken , addAudioSrc ,removeAudioUrl} = authSlice.actions
 export default authSlice.reducer

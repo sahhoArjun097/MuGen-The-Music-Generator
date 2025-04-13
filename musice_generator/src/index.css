@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.root{
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
 .card {
     overflow: hidden;
     position: relative;

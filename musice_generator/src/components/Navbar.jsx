@@ -57,10 +57,10 @@ const Navbar = () => {
 
         <div className="relative inline-flex">
           <NavLink
-            to=""
+            to="/profile"
             className="text-md px-2 font-semibold transition-all duration-150"
           >
-            <div className="w-10 h-10 rounded-full border-e-8  flex items-center justify-center font-bold shadow-lg">
+            <div className="w-10 h-10 rounded-full  flex items-center justify-center font-bold shadow-lg">
               <div className="w-10 h-10 rounded-full  text-white flex items-center justify-center overflow-hidden">
                 {userData.profile_picture ? (
                   <img

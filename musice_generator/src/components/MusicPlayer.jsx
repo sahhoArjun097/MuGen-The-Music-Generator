@@ -1,14 +1,17 @@
 
-import  { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { removeAudioUrl } from "../utils/authslice";
 const MusicPlayer = ({ setShow }) => {
     const canvasRef = useRef(null);
-    const audioRef = useRef(new Audio()); 
+    const audioRef = useRef(new Audio());
     const [audioCtx, setAudioCtx] = useState(null);
     const [analyser, setAnalyser] = useState(null);
     const [source, setSource] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(1);
     const [progress, setProgress] = useState(0);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const audioUrl = localStorage.getItem("audioSrc");
@@ -18,7 +21,7 @@ const MusicPlayer = ({ setShow }) => {
         }
         audioRef.current.src = audioUrl;
         audioRef.current.volume = volume;
-        audioRef.current.controls = false; 
+        audioRef.current.controls = false;
         audioRef.current.addEventListener("timeupdate", () => {
             setProgress((audioRef.current.currentTime / audioRef.current.duration) * 100);
         });
@@ -70,9 +73,13 @@ const MusicPlayer = ({ setShow }) => {
         };
         draw();
     };
+    const handleBackClick = () => {
+        alert("do you want to save the file")
+        dispatch(removeAudioUrl());
+        setShow(false);
+    };
     const handleVolumeChange = (e) => {
         const newVolume = e.target.value;
-
         setVolume(newVolume);
         audioRef.current.volume = newVolume;
     };
@@ -93,7 +100,7 @@ const MusicPlayer = ({ setShow }) => {
         setProgress(e.target.value);
     };
     return (
-        <div style={{ textAlign: "center", background: "black", color: "white", padding: "20px" }}>
+        <div className="w-full min-h-screen" style={{ textAlign: "center", background: "black", color: "white", padding: "20px" }}>
             <h1 className="mt-40">Audio Visualizer</h1>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
                 <button onClick={handlePlayPause} style={buttonStyle}>
@@ -117,8 +124,10 @@ const MusicPlayer = ({ setShow }) => {
                     style={{ width: "100px" }}
                 />
                 <button onClick={handleDownload} style={buttonStyle}>Download ⬇</button>
-            </div>  
-            <button onClick={() => setShow(false)} style={buttonStyle}>Back to Generator</button>
+            </div>
+            <button onClick={handleBackClick} style={buttonStyle}>
+                Back to Generator
+            </button>
             <canvas ref={canvasRef} style={{ display: "block", margin: "20px auto", background: "#222" }}></canvas>
         </div>
     );

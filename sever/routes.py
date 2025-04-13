@@ -12,6 +12,7 @@ from flask_bcrypt import Bcrypt
 import uuid
 import os
 from bson import ObjectId
+
 bcrypt = Bcrypt()
 
 # register
@@ -56,18 +57,14 @@ def login():
 
     return jsonify({"msg": "Invalid credentials"}), 401
 
-
-# Google Login route
-
-
 @auth_bp.route('/google-login', methods=['POST'])
 def google_login():
     data = request.get_json()
     email = data.get("email")
     name = data.get("name")
     profile_picture = data.get("profile_picture")
-    token = data.get("token")
-    songs = data.get("songs")
+    token = 500
+    songs = []
     if not email:
         return jsonify({"error": "Invalid data"}), 400
 
@@ -77,7 +74,6 @@ def google_login():
     if not existing_user:
      
         new_user = {
-           
             "email": email,
             "name": name,
             "profile_picture": profile_picture,
@@ -100,14 +96,25 @@ def logout():
     return jsonify({"msg": "Successfully logged out"}), 
 
 
-
-
-
 # addign songs to the user  
 @auth_bp.route('/<email>/songs', methods=['GET'])
 def get_songs_by_email(email):
     songs = CloudStorage.get_files_by_email(email)
     return jsonify(songs), 200
+
+
+# def deduct_token(email, cost):
+#     user = mongo.db.user.find_one({"email": email})
+#     if not user:
+#         return False, "User not found"
+
+#     current_token = user.get("token", 0)
+#     if current_token < cost:
+#         return False, "Insufficient tokens"
+
+#     new_token = current_token - cost
+#     mongo.db.user.update_one({"email": email}, {"$set": {"token": new_token}})
+#     return True, new_token
 
 
 # uploading song to the cloudinary
@@ -144,6 +151,10 @@ def perform_upload(file, email,mood):
 def generate_song(id):
     file_path = "songs/gana2.mp3"
     data = request.get_json()
+    email = data.get("email")
+    token_cost = 50 
+    success, result = User.deduct_token(email, token_cost)
+    print(result)
     print(data)
     try:
         with open(file_path, "rb") as f:
@@ -224,4 +235,3 @@ def generate_song(id):
 #     except Exception as e:
 #         os.remove(file_path)  # Cleanup on error
 #         return jsonify({"msg": "File upload failed", "error": str(e)}), 500
-
