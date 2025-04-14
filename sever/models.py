@@ -33,7 +33,6 @@ class User:
         result = mongo.db.users.update_one(
                {"email": email},
                {"$set": {"token": new_tokens}}
-
         )
         if result.modified_count == 1:
             return True, new_tokens

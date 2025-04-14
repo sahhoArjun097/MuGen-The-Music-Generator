@@ -10,24 +10,29 @@ import { addAudioSrc, deductToken } from "../utils/authslice";
 const MoodselectionPage = () => {
     const [selectedOption, setSelectedOption] = useState("");
     const userData = useSelector((state) => state.authSlice.userData.user)
-    const [length, setLength] = useState(70);
+    const [length, setLength] = useState(5);
     const dispatch = useDispatch();
     const moods = ["Cheerful", "Sorrow", "Up Lifting", "Dark"];
     const [show, setShow] = useState(!!localStorage.getItem("audioSrc")); // Show MusicPlayer if audio exists
     const userId = userData.id || userData._id?.$oid;
     console.log(userId)
     console.log(userData)
+    const [loading, setLoading] = useState(false);
+
+
     const handleGenerateMusic = async () => {
         if (!selectedOption) {
             alert("Please select a mood first");
             return;
         }
+        if (loading) return; // just in case
+
+        setLoading(true);
         try {
             if (userData.token == 0) {
                 alert("not enough tokens")
                 return
             }
-            localStorage.removeItem("audioSrc");
             dispatch(deductToken(50));
             const response = await api.post(
                 `/${userId}/generate-song`,
@@ -50,7 +55,7 @@ const MoodselectionPage = () => {
     return (
         <>
             {
-                show ? (<MusicPlayer setShow={setShow} />) : (
+                show ? (<MusicPlayer setShow={setShow} setLoadingk = {setLoading} />) : (
                     <div className="flex flex-col containerss items-center  min-h-screen bg-gradient-to-br  from-black to-gray-900 text-white  p-5 md:p-10">
                         <div className="w-full h-full mt-6 flex flex-col justify-center items-center">
                             <h1 className="text-4xl font-extrabold tracking-wide text-center mt-10">AI Music Generator</h1>
@@ -80,23 +85,27 @@ const MoodselectionPage = () => {
                                     <p className="text-green-400 mt-4">Generating music for {selectedOption}...</p>
                                 </div>
                                 <div className="mt-6">
-                                    <label className="block text-lg font-medium text-white">Length (seconds)</label>
+                                    <label className="block text-lg font-medium text-white">Tempature (number)</label>
                                     <input
                                         type="range"
-                                        min="10"
-                                        max="180"
+                                        min="1"
+                                        max="15"
                                         value={length}
                                         onChange={(e) => setLength(e.target.value)}
                                         className="w-full accent-yellow-500"
                                     />
-                                    <p className="text-lg text-gray-300 mt-1">{length}s</p>
+                                    <p className="text-lg text-gray-300 mt-1">{length}</p>
                                 </div>
-                                <p className="text-lg text-gray-400 mt-3">Cost: {Math.ceil(length / 10)} token</p>
+                                <p className="text-lg text-gray-400 mt-3">No: {Math.ceil(length / 10)} Midies</p>
                                 <motion.button
-                                    onClick={handleGenerateMusic} className="mt-6 bg-yellow-500 text-black p-2 rounded-lg w-full font-bold text-lg hover:bg-yellow-600 transition-all"
+                                    onClick={handleGenerateMusic}
+                                    disabled={loading}
+                                    className={`mt-6 p-2 rounded-lg w-full font-bold text-lg transition-all
+                                    ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-500 text-black hover:bg-yellow-600"}`}
                                 >
-                                    Generate Music
+                                    {loading ? "Generating..." : "Generate Music"}
                                 </motion.button>
+
                             </motion.div>
                             <div className="flex flex-col  items-center justify-center  space-y-10">
 
