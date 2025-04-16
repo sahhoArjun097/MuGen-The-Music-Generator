@@ -112,22 +112,27 @@ const MoodselectionPage = () => {
                                 <motion.div
                                     className="bg-white p-10 rounded-xl shadow-lg md:w-96  w-64 text-center backdrop-blur-lg bg-opacity-10 border border-gray-700"
                                 >
-                                    <h3 className="text-2xl font-semibold text-white">Your Tokens</h3>
+                                    <h3 className="text-2xl font-semibold text-white">Your MUSEs</h3>
                                     <p className="text-5xl font-bold text-yellow-500">{userData.token}</p>
                                     <Link to="/pricing">
                                         <motion.button
                                             className="mt-5 bg-gray-200 p-4 rounded-lg w-full text-black font-bold hover:bg-gray-300 transition-all"
                                             whileTap={{ scale: 0.95 }}
                                         >
-                                            + Add Tokens
+                                            + Add MUSEs
                                         </motion.button>
                                     </Link>
                                 </motion.div>
                                 <motion.div
                                     className="bg-white p-10 rounded-xl shadow-lg md:w-96 w-64 text-center backdrop-blur-lg bg-opacity-10 border border-gray-700"
                                 >
+                                    
+                                    <div>
                                     <h3 className="text-2xl font-semibold text-white">History</h3>
                                     <p className="text-gray-400 text-lg mt-2">No tracks generated yet</p>
+
+                                    </div>
+                                    
                                 </motion.div>
                             </div>
                         </div>

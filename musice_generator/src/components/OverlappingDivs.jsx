@@ -1,6 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 
 
@@ -57,27 +58,30 @@ export default function OverlappingDivs() {
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
         className="w-full max-w-lg text-center md:text-left"
       >
-        <div className="max-w-prose">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-50"><span className="text-blue-400">03.</span>
-          AI-Powered Music and
-            <strong className="text-indigo-600"> Moods </strong>
-            Just for You!
-          </h1>
+       <div className="max-w-prose">
+  <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-50">
+    <span className="text-blue-400">03.</span> 
+    Fuel Your Creativity with 
+    <strong className="text-indigo-600"> Muses</strong>
+  </h1>
 
-          <p className="mt-4 text-base sm:text-lg text-gray-300 leading-relaxed">
-          Experience the future of music creation! Our AI-powered system generates unique
-            melodies, harmonies, and beats based on your mood and preferences.  
-            Customize your track and download it instantly.
-          </p>
-        </div>
-
+  <p className="mt-4 text-base sm:text-lg text-gray-300 leading-relaxed">
+    Unlock the magic of endless music generation by purchasing <strong className="text-indigo-400">Muses</strong> —
+    our in-app tokens used to craft personalized songs. The more Muses you have, 
+    the more unique tracks you can create, explore, and download. 
+    <br className="hidden sm:block" />
+    Choose your Muse pack and start composing your musical journey today!
+  </p>
+</div>
+<Link to="/pricing">
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="mt-6 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:shadow-blue-400 transition"
         >
-              Generate More Music
+              Get MOre MUSEs
         </motion.button>
+        </Link>
       </motion.div>
       </motion.div>
     </section>

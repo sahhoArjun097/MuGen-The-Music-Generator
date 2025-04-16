@@ -8,34 +8,44 @@ const DashboardPage = () => {
   return (
     <StyledWrapper>
       <div className="containers bg-gray-700 w-full flex flex-col items-center gap-12 py-16">
+      <div className="relative w-full z-10 h-[70vh] flex flex-col justify-center items-center text-center overflow-hidden">
+  {/* Floating elements */}
+  <div className="absolute bottom-20 left-32 animate-float-slow">
+    <img src="_8431851.png" alt="note" className="w-20 h-20 opacity-70" />
+  </div>
+  <div className="absolute bottom-20 right-36 animate-float-fast">
+    <img src="letter-s_7268258.png" alt="note" className="w-20 h-20 opacity-60" />
+  </div>
+  <div className="absolute top-20 right-34 animate-float-medium">
+    <img src="letter-v_7268232.png" alt="note" className="w-20 h-20 opacity-80" />
+  </div>
 
-        <div className="w-full  z-10 h-[70vh] flex flex-col justify-center items-center text-center">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-            Welcome to
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-              {" "}
-              MuGen AI
-            </span>
-          </h1>
-          <p className="mt-4 text-base sm:text-lg text-gray-300 leading-relaxed ">
-            Manage your music, generate tracks, and explore features.
-          </p>
-          {/* Buttons */}
-          <div className="mt-6 flex flex-wrap gap-4">
-            <Link
-              to="/generate"
-              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
-            >
-              Generate Music
-            </Link>
-            <Link
-              to="/mymusic"
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
-            >
-              My Music
-            </Link>
-          </div>
-        </div>
+  {/* Main Content */}
+  <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
+    Welcome to
+    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+      {" "}MuGen AI
+    </span>
+  </h1>
+  <p className="mt-4 text-base sm:text-lg text-gray-300 leading-relaxed">
+    Manage your music, generate tracks, and explore features.
+  </p>
+  <div className="mt-6 flex flex-wrap gap-4">
+    <Link
+      to="/generate"
+      className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
+    >
+      Generate Music
+    </Link>
+    <Link
+      to="/mymusic"
+      className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+    >
+      My Music
+    </Link>
+  </div>
+</div>
+
         <div className="w-full  h-[50vh] md:h-[50vh] z-10 flex justify-center">
           <MusicGenerated />
         </div>

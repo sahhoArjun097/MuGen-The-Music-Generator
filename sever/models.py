@@ -44,6 +44,7 @@ class User:
     def save_google_user(user_data):
         """Save Google authenticated users"""
         mongo.db.users.insert_one(user_data)
+
     @staticmethod
     def find_by_email(email):
         return mongo.db.users.find_one({"email": email})
@@ -80,11 +81,13 @@ class CloudStorage:
     @staticmethod
     def get_files_by_email(email):
         return list(mongo.db.files.find({"user_email": email},
-        {"_id": 0, "file_url": 1, "file_mood": 1 }))
+        { "file_url": 1, "file_mood": 1 }))
 
 
     @staticmethod
     def get_files_by_user(email):
         """Retrieve all files uploaded by a user"""
         return list(mongo.db.files.find({"email": email}))  
-    
+
+
+# class favouritMusic:
