@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { removeAudioUrl } from "../utils/authslice";
-const MusicPlayer = ({ setShow , setLoading }) => {
+const MusicPlayer = ({ setShow , loading, setLoading }) => {
     const canvasRef = useRef(null);
     const audioRef = useRef(new Audio());
     const [audioCtx, setAudioCtx] = useState(null);
@@ -77,7 +77,7 @@ const MusicPlayer = ({ setShow , setLoading }) => {
         alert("do you want to save the file")
         dispatch(removeAudioUrl());
         setShow(false);
-        setLoading(true)
+        setLoading(false)
     };
     const handleVolumeChange = (e) => {
         const newVolume = e.target.value;

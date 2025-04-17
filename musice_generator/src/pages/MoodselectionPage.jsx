@@ -55,7 +55,7 @@ const MoodselectionPage = () => {
     return (
         <>
             {
-                show ? (<MusicPlayer setShow={setShow} setLoadingk = {setLoading} />) : (
+                show ? (<MusicPlayer setShow={setShow} loading = {loading}  setLoading = {setLoading}/>) : (
                     <div className="flex flex-col containerss items-center  min-h-screen bg-gradient-to-br  from-black to-gray-900 text-white  p-5 md:p-10">
                         <div className="w-full h-full mt-6 flex flex-col justify-center items-center">
                             <h1 className="text-4xl font-extrabold tracking-wide text-center mt-10">AI Music Generator</h1>
@@ -126,7 +126,7 @@ const MoodselectionPage = () => {
                                 <motion.div
                                     className="bg-white p-10 rounded-xl shadow-lg md:w-96 w-64 text-center backdrop-blur-lg bg-opacity-10 border border-gray-700"
                                 >
-                                    
+
                                     <div>
                                     <h3 className="text-2xl font-semibold text-white">History</h3>
                                     <p className="text-gray-400 text-lg mt-2">No tracks generated yet</p>

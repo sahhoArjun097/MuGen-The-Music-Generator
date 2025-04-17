@@ -8,10 +8,12 @@
 }
 
 body {
-    background-size: 60px 60px;
+    /* background-size: 60px 60px;
     background-image:
       linear-gradient(to right, gray 1px, transparent 1px),
-      linear-gradient(to bottom, gray 1px,transparent 1px);
+      linear-gradient(to bottom, gray 1px,transparent 1px); */
+
+      background: #000;
   }
 
   
@@ -233,6 +235,7 @@ body {
 
 /* The dot */
 .dot {
+  
   position: absolute;
   top: 50%;
   left: 50%;
@@ -489,4 +492,27 @@ body {
   100% {
     transform: translate(-50%, -50%) rotateX(375deg) rotateY(375deg);
   }
+}
+
+.container-profile {
+  width: 100%;
+  height: 100%;
+  /* Add your background pattern here */
+  /* background-color: lightblue; */
+  background-image: radial-gradient(black 55%, #0000),
+    /* radial-gradient(black 55%, #0000), */
+      linear-gradient(
+        135deg,
+        red,
+        orange,
+        yellow,
+        lime,
+        cyan,
+        blue,
+        indigo,
+        deeppink
+      );
+  background-size: 100% 0.5%, contain;
+  /* background-blend-mode: hard-light; */
+  /* background-position: 0 0, 1em 1em, 0 0; */
 }

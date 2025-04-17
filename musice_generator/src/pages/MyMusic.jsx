@@ -73,8 +73,6 @@ function MyMusic() {
               </div>
               <div className="flex gap-3 text-gray-600 text-lg">
                 <FaHeart className="cursor-pointer hover:text-red-500" />
-                <FaDownload className="cursor-pointer hover:text-green-600" />
-                <FaShareAlt className="cursor-pointer hover:text-blue-600" />
               </div>
             </div>
 
@@ -86,22 +84,24 @@ function MyMusic() {
                 {isPlayingIndex === index ? <FaPause className="text-gray-700" /> : <FaPlay className="text-gray-700" />}
               </button>
               <div className="flex-1  h-12 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500  rounded-md flex items-center justify-center overflow-hidden">
+
+               
                 <div className="loader">
                   <div className="dot"></div>
                   <div className="dot"></div>
                   <div className="dot"></div>
                 </div>
+                
+
               </div>
             </div>
 
             <div className="flex gap-6 text-gray-500 text-sm items-center">
               <div className="flex items-center gap-1">
-                <FaHeadphones />
-                <span>{song.plays || "42"} plays</span>
+
               </div>
               <div className="flex items-center gap-1">
-                <FaHeart />
-                <span>{song.likes || "12"} likes</span>
+
               </div>
             </div>
           </div>
@@ -126,8 +126,8 @@ function MyMusic() {
           <button
             key={tab}
             className={`px-4 py-2 rounded-md border font-semibold ${activeTab === tab
-                ? 'bg-white text-black border-gray-300'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              ? 'bg-white text-black border-gray-300'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             onClick={() => setActiveTab(tab)}
           >

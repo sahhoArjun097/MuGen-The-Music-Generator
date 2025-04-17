@@ -8,6 +8,7 @@ import MyMusicPage from "./pages/MyMusic";
 import ProfilePage from "./pages/Profile"; // Renamed 'Pattern' to 'ProfilePage' for clarity
 import Pricing from "./pages/Pricing";
 import MoodselectionPage from "./pages/MoodselectionPage";
+import Page404 from "./pages/404";
 
 
 const App = () => {
@@ -22,8 +23,9 @@ const App = () => {
         <Route path="/mymusic" element={<MyMusicPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="*" element={<Page404/>} />
       </Routes>
-      <Footer />
+      <ConditionalFooter />
     </Router>
   );
 };
@@ -31,15 +33,15 @@ const App = () => {
 // Component to conditionally render Navbar
 const ConditionalNavbar = () => {
   const location = useLocation();
-  const hideNavbarPaths = ["/", "/signup"];
+  const showNavbarPaths = ["/dashboard", "/generate", "/mymusic","/profile","/pricing" ];
 
-  return hideNavbarPaths.includes(location.pathname) ? null : <Navbar />;
+  return showNavbarPaths.includes(location.pathname) ? <Navbar />:null ;
 };
 const ConditionalFooter = () => {
   const location = useLocation();
-  const hideNavbarPaths = ["/", "/signup"];
+  const showNavbarPaths = ["/dashboard", "/generate", "/mymusic","/profile","/pricing" ];
 
-  return hideNavbarPaths.includes(location.pathname) ? null : <Navbar />;
+  return showNavbarPaths.includes(location.pathname) ? <Footer />:null ;
 };
 
 export default App;
