@@ -12,7 +12,9 @@ from flask_bcrypt import Bcrypt
 import uuid
 import os
 from bson import ObjectId
-
+from config import client
+import hmac
+import hashlib
 bcrypt = Bcrypt()
 
 # register
@@ -86,9 +88,6 @@ def google_login():
 
     return jsonify({"access_token": access_token, "user": user, "msg": "Google login successful"}), 200
 
-
-
-
 # Logout route
 @auth_bp.route('/logout', methods=['POST'])
 @jwt_required()
@@ -102,22 +101,8 @@ def get_songs_by_email(email):
     songs = CloudStorage.get_files_by_email(email)
     return jsonify(songs), 200
 
+# -----------------------------------------------------------------
 
-# def deduct_token(email, cost):
-#     user = mongo.db.user.find_one({"email": email})
-#     if not user:
-#         return False, "User not found"
-
-#     current_token = user.get("token", 0)
-#     if current_token < cost:
-#         return False, "Insufficient tokens"
-
-#     new_token = current_token - cost
-#     mongo.db.user.update_one({"email": email}, {"$set": {"token": new_token}})
-#     return True, new_token
-
-
-# uploading song to the cloudinary
 
 def perform_upload(file, email,mood):
     """Core logic for uploading the file"""
@@ -147,6 +132,8 @@ def perform_upload(file, email,mood):
 
 
 # generating song to the 
+
+
 @auth_bp.route('/<id>/generate-song', methods=['POST'])
 def generate_song(id):
     file_path = "songs/gana2.mp3"
@@ -195,6 +182,40 @@ def generate_song(id):
     
     # generate_midi(tempo=tempo, output_file=f"{id}-{song_number}", scale_type=scale_type)
 
+
+@auth_bp.route('/create-order',methods=['POST'])
+def create_order():
+    data = request.get_json()
+    amount = data.get("amount") 
+
+    payment = client.order.create({
+        "amount": int(amount) * 100, 
+        "currency": "INR",
+        "payment_capture": 1
+    })
+    print(payment)
+    return jsonify(payment)
+
+@auth_bp.route("/paymentverification", methods=["POST"])
+def verify_payment():
+    data = request.form if request.form else request.get_json()
+
+    razorpay_order_id = data.get("razorpay_order_id")
+    razorpay_payment_id = data.get("razorpay_payment_id")
+    razorpay_signature = data.get("razorpay_signature")
+
+    body = f"{razorpay_order_id}|{razorpay_payment_id}"
+    expected_signature = hmac.new(
+        bytes(os.getenv("RAZORPAY_KEY_SECRET"), 'utf-8'),
+        bytes(body, 'utf-8'),
+        hashlib.sha256
+    ).hexdigest()
+    print(expected_signature)
+
+    if expected_signature == razorpay_signature:
+        return jsonify({"success": True, "message": "Payment Verified"}), 200
+    else:
+        return jsonify({"success": False, "message": "Invalid Signature"}), 400
 
 
 

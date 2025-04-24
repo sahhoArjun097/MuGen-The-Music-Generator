@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import cloudinary
 import cloudinary.uploader
+import razorpay
 
 # Load environment variables from .env file
 load_dotenv()
@@ -12,6 +13,11 @@ class Config:
     CLOUD_NAME = os.getenv("CLOUD_NAME")  # ✅ Fixed assignment
     API_KEY = os.getenv("API_KEY")        # ✅ Fixed assignment
     API_SECRET = os.getenv("API_SECRET")  # ✅ Removed extra space
+    RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
+    RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
+
+    
+client = razorpay.Client(auth=(Config.RAZORPAY_KEY_ID, Config.RAZORPAY_KEY_SECRET))
 
 # Configure Cloudinary with loaded environment variables
 cloudinary.config(
@@ -19,6 +25,7 @@ cloudinary.config(
     api_key=Config.API_KEY,
     api_secret=Config.API_SECRET
 )
+
 
 
 def upload_to_cloudinary(file_path):
