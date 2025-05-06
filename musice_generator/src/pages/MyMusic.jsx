@@ -18,6 +18,9 @@ function MyMusic() {
   const [isPlayingIndex, setIsPlayingIndex] = useState(null);
   const audioRef = useRef(null);
   const userData = useSelector((state) => state.authSlice.userData.user);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -59,6 +62,12 @@ function MyMusic() {
     if (filtered.length === 0) {
       return <p className="text-center text-gray-400">No songs in this category yet.</p>;
     }
+    const handleSeek = (e) => {
+      const seekTime = Number(e.target.value);
+      audioRef.current.currentTime = seekTime;
+      setCurrentTime(seekTime);
+    };
+
 
     return (
       <div className="grid gap-6 p-4">
@@ -83,9 +92,10 @@ function MyMusic() {
               >
                 {isPlayingIndex === index ? <FaPause className="text-gray-700" /> : <FaPlay className="text-gray-700" />}
               </button>
-              <div className="flex-1  h-12 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500  rounded-md flex items-center justify-center overflow-hidden">
+              
+              <div className='w-full '>
+                 <div className="flex-1  h-12 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500  rounded-md flex items-center justify-center overflow-hidden">
 
-               
                 <div className="loader">
                   <div className="dot"></div>
                   <div className="dot"></div>
@@ -94,6 +104,22 @@ function MyMusic() {
                 
 
               </div>
+              <div className="flex-1">
+                {isPlayingIndex === index && (
+                  <input
+                    type="range"
+                    min="0"
+                    max={duration}
+                    value={currentTime}
+                    onChange={handleSeek}
+                    className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                  />
+                )}
+              </div>
+
+                </div>
+             
+
             </div>
 
             <div className="flex gap-6 text-gray-500 text-sm items-center">
@@ -117,8 +143,14 @@ function MyMusic() {
       {/* Hidden global audio element */}
       <audio
         ref={audioRef}
-        onEnded={() => setIsPlayingIndex(null)}
+        onTimeUpdate={() => setCurrentTime(audioRef.current.currentTime)}
+        onLoadedMetadata={() => setDuration(audioRef.current.duration)}
+        onEnded={() => {
+          setIsPlayingIndex(null);
+          setCurrentTime(0);
+        }}
       />
+
 
       {/* Tab Navigation */}
       <div className="flex justify-center space-x-2 mb-8">

@@ -3,86 +3,83 @@ import api from "../api";
 import { addToken } from "../utils/authslice";
 
 export default function Pricing() {
-
     const dispatch = useDispatch()
-
-
-
     const createOrder = async (amount) => {
         try {
-          const res = await api.post("/create-order", {
-            amount,
-          });
-      
-          const orderData = res.data;
-          const { id: order_id } = orderData;
-          console.log(orderData);
-      
-          const options = {
-            key: "rzp_test_MGWPWiEReMuL5p", // Replace with your Razorpay key
-            amount: amount * 100,
-            currency: "INR",
-            name: "MuGen",
-            description: "Music Plan Purchase",
-            order_id,
-            handler: async function (response) {
-              const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = response;
-      
-              try {
-                console.log(razorpay_order_id)
-                console.log(razorpay_payment_id)
-                console.log(razorpay_signature)
-                const verifyRes = await api.post("/paymentverification", {
-                    razorpay_payment_id,
-                    razorpay_order_id,
-                    razorpay_signature,
-                  });
-                  console.log("Verification response:", verifyRes.data);
-                  const resData = verifyRes.data;
-if (resData.success) {
-  console.log("Payment Verified:", resData.message);
-} else {
-  console.error("Payment Verification Failed:", resData.message);
-}
-      
-                // const result = await verifyRes.json();
-                if (resData.success) {
-                  alert("✅ Payment Verified Successfully!");
-                   if (amount == 150){
-                    
-                    dispatch(addToken(100))
-                }
-                if (amount == 399){
-                    
-                    dispatch(addToken(300))
-                }
-                if (amount == 699){
-                    
-                    dispatch(addToken(500))
-                }
+            const res = await api.post("/create-order", {
+                amount,
+            });
 
-                } else {
-                  alert("❌ Payment Verification Failed!");
-                }
-              } catch (verifyError) {
-                console.error("Verification Error:", verifyError);
-                alert("⚠️ Could not verify payment.");
-              }
-            },
-            prefill: {
-              name: "Arjun Agarwal",
-              email: "user@example.com",
-            },
-            theme: {
-              color: "#fbbf24",
-            },
-          };
-      
-          const razorpay = new window.Razorpay(options);
-          razorpay.open();
+            const orderData = res.data;
+            const { id: order_id } = orderData;
+            console.log(orderData);
+
+            const options = {
+                key: "rzp_test_MGWPWiEReMuL5p", // Replace with your Razorpay key
+                amount: amount * 100,
+                currency: "INR",
+                name: "MuGen",
+                description: "Music Plan Purchase",
+                order_id,
+                handler: async function (response) {
+                    const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = response;
+
+                    try {
+                        // console.log(razorpay_order_id)
+                        // console.log(razorpay_payment_id)
+                        // console.log(razorpay_signature)
+                        const verifyRes = await api.post("/paymentverification", {
+                            razorpay_payment_id,
+                            razorpay_order_id,
+                            razorpay_signature,
+                        });
+                        // console.log("Verification response:", verifyRes.data);
+                        const resData = verifyRes.data;
+                        if (resData.success) {
+                            console.log("Payment Verified:", resData.message);
+                        } else {
+                            console.error("Payment Verification Failed:", resData.message);
+                        }
+
+                        // const result = await verifyRes.json();
+                        if (resData.success) {
+                            
+                            alert("✅ Payment Verified Successfully!");
+                            if (amount == 150) {
+
+                                dispatch(addToken(100))
+                            }
+                            if (amount == 399) {
+
+                                dispatch(addToken(300))
+                            }
+                            if (amount == 699) {
+
+                                dispatch(addToken(500))
+                            }
+
+                        } else {
+                            alert("❌ Payment Verification Failed!");
+                        }
+                    } catch (verifyError) {
+                        console.error("Verification Error:", verifyError);
+                        alert("⚠️ Could not verify payment.");
+                    }
+                },
+                prefill: {
+                    name: "Arjun Agarwal",
+                    email: "user@example.com",
+                },
+                theme: {
+                    color: "#fbbf24",
+                },
+            };
+
+            const razorpay = new window.Razorpay(options);
+            razorpay.open();
         } catch (error) {
-          console.error("Failed to create order:", error);
-        }      
+            console.error("Failed to create order:", error);
+        }
     };
     return (
         <div className="min-h-screen bg-black text-white flex flex-col items-center py-12 px-4  sm:px-6 lg:px-8">

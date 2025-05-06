@@ -10,12 +10,12 @@ const Profile = () => {
       <div className="max-w-4xl mt-16 mx-auto bg-white rounded-xl shadow-md p-6">
         {/* Profile Header */}
         <div className="flex items-center gap-6">
-          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-indigo-500 shadow-md">
+          <div className="w-24 h-24 rounded-full   overflow-hidden border-4 border-indigo-500 shadow-md">
             {user.profile_picture ? (
               <img
               src={user.profile_picture}
-                alt="Profile"
-                className="w-full h-full object-cover"
+                alt=""
+                className="w-full   h-full object-cover"
                 />
             ) : (
               <div className="w-full h-full bg-indigo-500 text-white flex items-center justify-center text-2xl font-bold">
@@ -38,25 +38,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Stats Section */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 text-center">
-          <div>
-            <p className="text-xl font-semibold text-gray-700">{user.songs?.length || 0}</p>
-            <p className="text-sm text-gray-500">Tracks Created</p>
-          </div>
-          <div>
-            <p className="text-xl font-semibold text-gray-700">128h</p>
-            <p className="text-sm text-gray-500">Listening Time</p>
-          </div>
-          <div>
-            <p className="text-xl font-semibold text-gray-700">23</p>
-            <p className="text-sm text-gray-500">Favorites</p>
-          </div>
-          <div>
-            <p className="text-xl font-semibold text-gray-700">156</p>
-            <p className="text-sm text-gray-500">Downloads</p>
-          </div>
-        </div>
+       
 
         {/* Tabs Placeholder */}
         <div className="mt-10">

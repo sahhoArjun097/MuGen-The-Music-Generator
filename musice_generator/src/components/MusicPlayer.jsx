@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { removeAudioUrl } from "../utils/authslice";
+import { Play, Pause, Download, ArrowLeft } from 'lucide-react';
+import AudioVisualizer from "./AudioVisualizer";
 const MusicPlayer = ({ setShow , loading, setLoading }) => {
     const canvasRef = useRef(null);
     const audioRef = useRef(new Audio());
@@ -79,6 +81,8 @@ const MusicPlayer = ({ setShow , loading, setLoading }) => {
         setShow(false);
         setLoading(false)
     };
+
+    
     const handleVolumeChange = (e) => {
         const newVolume = e.target.value;
         setVolume(newVolume);
@@ -101,36 +105,70 @@ const MusicPlayer = ({ setShow , loading, setLoading }) => {
         setProgress(e.target.value);
     };
     return (
-        <div className="w-full min-h-screen" style={{ textAlign: "center", background: "black", color: "white", padding: "20px" }}>
-            <h1 className="mt-40">Audio Visualizer</h1>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
-                <button onClick={handlePlayPause} style={buttonStyle}>
-                    {isPlaying ? "Pause ⏸" : "Play ▶"}
-                </button>
-                <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={progress}
-                    onChange={handleProgressChange}
-                    style={{ width: "200px" }}
-                />
-                <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value={volume}
-                    onChange={handleVolumeChange}
-                    style={{ width: "100px" }}
-                />
-                <button onClick={handleDownload} style={buttonStyle}>Download ⬇</button>
-            </div>
-            <button onClick={handleBackClick} style={buttonStyle}>
-                Back to Generator
-            </button>
-            <canvas ref={canvasRef} style={{ display: "block", margin: "20px auto", background: "#222" }}></canvas>
+        <div className="w-full min-h-screen flex flex-col items-center justify-center py-8 px-4">
+      <div className="w-full max-w-3xl bg-black/60 backdrop-blur-xl rounded-2xl shadow-2xl p-6 text-white">
+        <div className="flex items-center mb-8">
+          <button 
+            onClick={handleBackClick} 
+            className="p-2 rounded-full hover:bg-gray-800 transition"
+          >
+            <ArrowLeft size={24} />
+          </button>
+          <h1 className="text-2xl sm:text-3xl font-bold mx-auto">Audio Visualizer</h1>
         </div>
+        
+        <AudioVisualizer analyser={analyser} isPlaying={isPlaying} />
+        
+        <div className="mt-6">
+          <div className="flex items-center justify-between mb-2">
+            {/* <span className="text-sm text-gray-400">{formatTime(currentTime)}</span> */}
+            {/* <span className="text-sm text-gray-400">{formatTime(duration)}</span>            */}
+          </div>
+          
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={progress}
+            onChange={handleProgressChange}
+            className="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-purple-500"
+          />
+          
+          <div className="flex items-center justify-between mt-6">
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={handlePlayPause}
+                className="p-3 bg-purple-600 hover:bg-purple-700 rounded-full transition-colors"
+              >
+                {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+              </button>
+              
+              <div className="flex items-center space-x-2 ml-4">
+                <span className="text-xs sm:text-sm text-gray-400">Volume</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                  className="w-20 sm:w-24 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                />
+              </div>
+            </div>
+            
+            <button
+              onClick={handleDownload}
+              className="flex items-center px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-md transition-colors text-sm"
+            >
+              <Download size={16} className="mr-1" /> Download
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <audio ref={audioRef} className="hidden" />
+    </div>
     );
 };
 const buttonStyle = {
