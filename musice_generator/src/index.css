@@ -145,4 +145,75 @@
     width: 0;
     opacity: 0;
   }
+
+  @keyframes animatePath {
+    0% {
+      d: path("M0,25 C150,110 150,-60 300,25");
+    }
+    50% {
+      d: path("M0,25 C160,-50 140,110 300,25");
+    }
+    100% {
+      d: path("M0,25 C150,110 150,-60 300,25");
+    }
+  }
   
+  /* d-path animation is not supported in pure CSS; use JS or SMIL if needed */
+  
+  .animate-path {
+    filter: blur(20px);
+    animation: glow 2s ease-in-out infinite;
+  }
+  
+  @keyframes glow {
+    0%, 100% {
+      stroke: #ff0092;
+    }
+    50% {
+      stroke: #00ff00;
+    }
+  }
+  
+  
+
+/* 
+  .body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .svg {
+    position: absolute;
+    width: 400px;
+    fill: none;
+  }
+  
+  .svg:nth-child(2) {
+    filter: blur(40px);
+  }
+  
+  .svg path {
+    d: path("M0,25 C150,110 150, -60 300,25");
+    stroke: #ff0092;
+    stroke-width: 50;
+    stroke-linecap: round;
+    transform: translate(50px,50%);
+    animation: animate 2s ease-in-out infinite;
+  }
+  
+  @keyframes animate {
+    0% {
+      stroke: greenyellow;
+      stroke: #ff0092;
+      d: path("M0,25 C150,110 150, -60 300,25");
+    }
+  
+    50% {
+      stroke: dodgerblue;
+      stroke: #00ff00;
+      d: path("M0,25 C160,-50 140, 110 300,25");
+    }
+  }
+
+   */

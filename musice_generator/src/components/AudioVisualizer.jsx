@@ -71,14 +71,36 @@ const AudioVisualizer = ({ analyser, isPlaying }) => {
   }, [analyser, isPlaying]);
 
   return (
-    <div className="w-full aspect-[16/6] bg-gray-900/50 rounded-lg overflow-hidden relative">
-      <canvas ref={canvasRef} className="w-full h-full block" />
-      {!isPlaying && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-gray-400 text-sm">Play to visualize audio</p>
-        </div>
-      )}
+    <div className="">
+      <div className="w-full aspect-[16/6] bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] rounded-lg overflow-hidden relative">
+        <canvas ref={canvasRef} className="w-full h-full block" />
+
+        <svg className="absolute w-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-70">
+          <defs>
+            <linearGradient id="strokeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#ff0092" />
+              <stop offset="100%" stopColor="#00ff00" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M0,25 C150,110 150,-60 300,25"
+            stroke="url(#strokeGradient)"
+            strokeWidth="50"
+            strokeLinecap="round"
+            fill="none"
+            className="animate-path"
+          />
+        </svg>
+
+        {!isPlaying && (
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            {/* Your button or icon here */}
+          </div>
+        )}
+      </div>
     </div>
+
+
   );
 };
 
