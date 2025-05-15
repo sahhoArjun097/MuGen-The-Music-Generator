@@ -199,12 +199,6 @@ def create_order():
 
 
 
-
-
-
-
-
-
 @auth_bp.route("/paymentverification", methods=["POST"])
 def verify_payment():
     data = request.form if request.form else request.get_json()
